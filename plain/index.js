@@ -26,7 +26,9 @@ function renderResults(stopInfo,arrivals){
         <span class='stop-name'>${stopInfo.name}</span> towards ${stopInfo.towards} 
         </div>`
 
-    s+="</div>";
+    s+="</div>"; // stop-info
+
+    s+=
     s+="</div>"; // results
     document.getElementById('app').innerHTML=s;
 }
