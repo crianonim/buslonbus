@@ -126,3 +126,6 @@ body {
 .stop-main-info  .stop-name {
     font-weight: bolder;
 }
+#console {
+    white-space: pre;
+}

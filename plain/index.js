@@ -1,11 +1,24 @@
 import Service from './service.js';
 
+window.addEventListener('load',()=>{
+    displaySMScodeEntry();
+    // document.getElementById('btn_nearby').addEventListener('click',getNearby)
+    getNearby();
+})
+let fakeLog=(s) => {
+    return
+    let console = document.getElementById('console');
+    console.textContent += ('\n' + JSON.stringify(s));
+}
+console.log = fakeLog;
+console.error=fakeLog;
+console.warn=fakeLog;
 let code = "";
 function displayStopBySmsCode(code) {
     Service.getStopID(code).then(
         (res) => {
             let id = res.id
-            console.log(res);
+            // console.log(res);
             Service.getStopInfo(id).then(console.log)
             showArrivalsAtStop(res);
         }
@@ -17,7 +30,7 @@ function displayStop(code) {
     Service.getStopInfo(code).then(
         (res) => {
             let id = res.id
-            console.log(res);
+            // console.log(res);
             Service.getStopInfo(id).then(console.log)
             showArrivalsAtStop(res);
         }
@@ -44,61 +57,75 @@ function displaySMScodeEntry() {
                         code = code.substr(0, code.length - 1)
                     }
                 } else {
-                    if (code.length<5){
+                    if (code.length < 5) {
                         code += digit;
-                        if (code.length==5){
-                            console.log("HAVE")
-                           displayStopBySmsCode(code)
+                        if (code.length == 5) {
+                            // console.log("HAVE")
+                            displayStopBySmsCode(code)
                         }
                     }
-                   
+
                 }
-            console.log(code)
+            // console.log(code)
             updateCode();
         }
     })
-    document.getElementById("smsCodeToggle").addEventListener('click',()=>{
+    document.getElementById("smsCodeToggle").addEventListener('click', () => {
         console.log("Toggle")
         document.getElementById('code').classList.toggle('hidden');
         document.getElementById('digits').classList.toggle('hidden');
 
     })
 }
-displaySMScodeEntry()
+function getNearby(){
+    try{
+
+        let re = Service.getStopsWithinRadius(500);
+        re.then((stops) => {
+            // console.log("Have stops"+ stops.length);
+            let s = `<div class='around'><div class='around-header'>Nearby Bus stops</div>`;
+            stops.forEach(stop => {
+
+                if (!stop.lines.length) {
+                    
+                    return;
+
+                }
+                s += `<div class='stop' data-stop-id='${stop.id}'>`
+                s += `<span class='letter'>${(stop.stopLetter||'-').replace('->', '')}</span>`;
+                s += `<div class='stop-main-info'><span><span class='stop-name'>${stop.name} </span>`;
+                s += ` towards ${stop.towards}</span>`
+                s += `<span>${stop.lines.join(', ')}</span></div>`
+                s += `</div>`; //stop
+                // console.log(s)
+            })
+            // console.log("All:"+s);
+            s += `</div>`; //around
+            let around = document.getElementById('around')
+            around.innerHTML = s;
+            around.querySelectorAll('.stop').forEach(stop => {
+                stop.addEventListener('click', (ev) => {
+                    displayStop(ev.currentTarget.dataset.stopId)
+                    // console.log("Clicked on id", ev.currentTarget.dataset.stopId)
+                })
+            })
+        })
+    } catch (e){
+        console.log("ERROR"+e);
+    }
+}
 // displayStop('490000055A');
 //displayStopBySmsCode(72538);
-let re = Service.getStopsWithinRadius(500);
-re.then((stops) => {
-    console.log("Have stops", stops);
-    let s = `<div class='around'><div class='around-header'>Nearby Bus stops</div>`;
-    stops.forEach(stop => {
-        if (!stop.lines.length) return ;    
-        s += `<div class='stop' data-stop-id='${stop.id}'>`
-        s += `<span class='letter'>${stop.stopLetter.replace('->', '')}</span>`;
-        s += `<div class='stop-main-info'><span><span class='stop-name'>${stop.name} </span>`;
-        s += ` towards ${stop.towards}</span>`
-        s += `<span>${stop.lines.join(',')}</span></div>`
-        s += `</div>`; //stop
-    })
-    s += `</div>`; //around
-    let around = document.getElementById('around')
-    around.innerHTML = s;
-    around.querySelectorAll('.stop').forEach(stop => {
-        stop.addEventListener('click', (ev) => {
-            displayStop(ev.currentTarget.dataset.stopId)
-            console.log("Clicked on id", ev.currentTarget.dataset.stopId)
-        })
-    })
-})
+
 function showArrivalsAtStop(stopInfo) {
     let id = stopInfo.id;
     Service.getArrivailAtStopID(id).then(
         (arr) => {
             let processed = Service.sortByArrivalTime(arr)
-            console.log(arr)
+            // console.log(arr)
             // processed.forEach(el=>console.log(JSON.stringify(el,null,2)))
             processed.forEach(el => {
-                console.log(`${el.expectedArrival} ${el.lineName} ${el.destinationName}`);
+                // console.log(`${el.expectedArrival} ${el.lineName} ${el.destinationName}`);
             });
             stopInfo.timestamp = Date.now();
             stopInfo.linesExcluded = stopInfo.linesExcluded || [];
@@ -164,7 +191,7 @@ function renderResults(stopInfo, arrivals) {
             } else {
                 stopInfo.linesExcluded.push(lineName);
             }
-            console.log(stopInfo.linesExcluded)
+            // console.log(stopInfo.linesExcluded)
             renderResults(stopInfo, arrivals)
         }
     });
