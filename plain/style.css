@@ -1,0 +1,128 @@
+body {
+    font-family: sans-serif;
+}
+
+.stop-title-line {
+    display: flex;
+    align-items: center;
+}
+.stop-title-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    background-color: grey;
+    color: white;
+    padding: 2px;
+}
+.stop-towards {
+    font-size:0.8em;
+}
+.lines {
+    margin: 5px 0px;
+}
+.line {
+    border: 1px solid black;
+    padding: 2px;   
+    margin:2px;
+}
+
+.letter {
+    background-color: red;
+    color:white;
+    padding:5px;
+    font-size: 1.3em;
+    width: 1em;
+    height: 1em;
+    border-radius:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    margin-right: 2px;
+    flex-shrink: 0;
+}
+.arrival-time {
+    width:4em;
+    display: inline-block;
+}
+.time-to-station {
+    font-weight: bolder;
+    width: 3em;
+    display: inline-block;
+}
+.line-name {
+    display: inline-block;
+    width: 2em;
+    color:red;
+}
+.excluded {
+    color:grey;
+    border-color: grey;
+}
+.button {
+    border: 1px solid black;
+    padding:1px 3px;
+}
+.update-info {
+    display:flex;
+    width: 100%;
+    align-items: center;
+}
+.update-info-content {
+    flex-grow:1;
+}
+#digits {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#digits .digit {
+    width:32%;
+    height:2em;
+    font-size: 2em;
+    background: lightslategray;
+    margin:3px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+#code {
+    display: flex;
+    justify-content: space-between;
+}
+#code > div {
+    width:19%;
+    height: 2em;
+    /* background-color: lightblue; */
+    border: 1px solid lightslategray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+}
+
+#smsCodeToggle,.around-header{
+    padding:3px;
+    border: 1px solid lightslategray;
+    background-color:lightslategray;
+    color:white;
+    margin: 3px 0;
+}
+.hidden{
+    display: none!Important;
+}
+.around > .stop {
+    display: flex;
+    margin: 10px 0;
+    align-items: center;
+}
+.stop-main-info {
+    display:flex;
+    flex-direction: column;
+    font-size: 0.8em;
+}
+.stop-main-info  .stop-name {
+    font-weight: bolder;
+}
