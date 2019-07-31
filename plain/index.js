@@ -2,17 +2,17 @@ import Service from './service.js';
 
 window.addEventListener('load',()=>{
     displaySMScodeEntry();
-    // document.getElementById('btn_nearby').addEventListener('click',getNearby)
     getNearby();
 })
 let fakeLog=(s) => {
-    return
     let console = document.getElementById('console');
     console.textContent += ('\n' + JSON.stringify(s));
 }
-console.log = fakeLog;
-console.error=fakeLog;
-console.warn=fakeLog;
+if (location.search==="?debug"){
+    console.log = fakeLog;
+    console.error=fakeLog;
+    console.warn=fakeLog;
+}
 let code = "";
 function displayStopBySmsCode(code) {
     Service.getStopID(code).then(
@@ -26,7 +26,6 @@ function displayStopBySmsCode(code) {
     )
 }
 function displayStop(code) {
-
     Service.getStopInfo(code).then(
         (res) => {
             let id = res.id
@@ -34,7 +33,6 @@ function displayStop(code) {
             Service.getStopInfo(id).then(console.log)
             showArrivalsAtStop(res);
         }
-
     )
 }
 function updateCode() {
@@ -82,14 +80,10 @@ function getNearby(){
 
         let re = Service.getStopsWithinRadius(500);
         re.then((stops) => {
-            // console.log("Have stops"+ stops.length);
             let s = `<div class='around'><div class='around-header'>Nearby Bus stops</div>`;
             stops.forEach(stop => {
-
                 if (!stop.lines.length) {
-                    
                     return;
-
                 }
                 s += `<div class='stop' data-stop-id='${stop.id}'>`
                 s += `<span class='letter'>${(stop.stopLetter||'-').replace('->', '')}</span>`;
@@ -114,8 +108,6 @@ function getNearby(){
         console.log("ERROR"+e);
     }
 }
-// displayStop('490000055A');
-//displayStopBySmsCode(72538);
 
 function showArrivalsAtStop(stopInfo) {
     let id = stopInfo.id;

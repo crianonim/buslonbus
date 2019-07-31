@@ -24,8 +24,8 @@ function timeDifference(start,end){
   
     return ((new Date(end)-new Date(start))/1000)>>0
 }
-async function getStopsWithinRadius(r=200){
 
+async function getStopsWithinRadius(r=200){
   return new Promise( (resolve)=>{
     navigator.geolocation.getCurrentPosition( async (pos)=>{
         let {coords}=pos;
@@ -42,8 +42,6 @@ async function getStopsWithinRadius(r=200){
             let stopInfo={stopLetter:stop.stopLetter,lines,id:stop.id,name:stop.commonName,distance:stop.distance,towards};
             return stopInfo;
         })
-        // console.log(stops)
-        // console.log(JSON.stringify(json,null,2));
         resolve(stops)
     })
   })  
