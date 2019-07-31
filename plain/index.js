@@ -137,7 +137,8 @@ function renderResults(stopInfo, arrivals) {
        <div class='stop-title-text'> 
         <span class='stop-name'>${stopInfo.name}</span>
         <span class='stop-towards'> towards ${stopInfo.towards} </span>
-        </div> 
+        </div>
+        <div class='make-favourite'> + </div>
         </div>`;
   s += "<div class='lines'>";
   stopInfo.lines.forEach(el => {

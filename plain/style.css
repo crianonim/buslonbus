@@ -129,3 +129,8 @@ body {
 #console {
     white-space: pre;
 }
+.make-favourite {
+    width: 2rem;
+    border:solid 1px black;
+    text-align: center;
+}

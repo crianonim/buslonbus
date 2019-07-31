@@ -4,7 +4,7 @@ function extractTimeFromISODateString(s) {
 }
 function extractArrivalInfo(arr) {
   return arr.map(el => {
-    let {
+    const {
       destinationName,
       lineName,
       expectedArrival,
