@@ -66,7 +66,7 @@ function displaySMScodeEntry() {
 }
 function renderStop(stop) {
   return !stop.lines.length
-    ? ''
+    ? ""
     : `
     <div class='stop' data-stop-id='${stop.id}'>
      <span class='letter'>${(stop.stopLetter || "-").replace("->", "")}</span>
@@ -75,7 +75,7 @@ function renderStop(stop) {
        <span class='stop-name'>${stop.name}</span>
        towards ${stop.towards}
       </span>
-      <span>${stop.lines.join(', ')}</span>
+      <span>${stop.lines.join(", ")}</span>
     </div>
     </div>
        `;
@@ -83,13 +83,13 @@ function renderStop(stop) {
 function getNearby() {
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      const around=document.getElementById("around")
+      const around = document.getElementById("around");
       around.innerHTML = `
         <div class='around'>
          <div class='around-header'>Nearby Bus stops</div>
-         ${stops.map(renderStop).join('')}
+         ${stops.map(renderStop).join("")}
         </div>
-       `
+       `;
       around.querySelectorAll(".stop").forEach(stop => {
         stop.addEventListener("click", ev => {
           displayStop(ev.currentTarget.dataset.stopId);
@@ -127,20 +127,24 @@ function updateTimes() {
     ((Date.now() - ago.dataset.updatedAgo) / 1000) >> 0
   );
 }
+// WIP
+function renderLine(el){
+    return `
+    <span class='line'>${el}</span>
+    `
+}
 function renderResults(stopInfo, arrivals) {
-  let s = "<div class='results'>";
-  s += "<div class='stop-info'>";
-  s += `<div class='stop-title-line'><span class='letter'>${stopInfo.stopLetter.replace(
-    "->",
-    ""
-  )}</span>
+  let s = `<div class='results'>
+  <div class='stop-info'>";
+  <div class='stop-title-line'>
+  <span class='letter'>${stopInfo.stopLetter.replace("->", "")}</span>
        <div class='stop-title-text'> 
         <span class='stop-name'>${stopInfo.name}</span>
         <span class='stop-towards'> towards ${stopInfo.towards} </span>
         </div>
         <div class='make-favourite'> + </div>
-        </div>`;
-  s += "<div class='lines'>";
+        </div>
+   <div class='lines'>"`;
   stopInfo.lines.forEach(el => {
     let isExcluded = stopInfo.linesExcluded.includes(el) ? "excluded" : "";
     s += `<span class='line ${isExcluded}'>${el}</span>`;

@@ -27,8 +27,8 @@ function sortByArrivalTime(arr) {
 }
 function secondsToTime(s) {
   if (s < 0) return "due";
-  let mins = (s / 60) >> 0;
-  let secs = s - mins * 60;
+  const mins = (s / 60) >> 0;
+  const secs = s - mins * 60;
 
   return (mins + "").padStart(2, "0") + ":" + (secs + "").padStart(2, "0");
 }
@@ -52,7 +52,7 @@ async function getStopsWithinRadius(r = 200) {
         const lines = stop.lines.map(el => el.name);
         let towards = stop.additionalProperties.find(el => el.key == "Towards");
         if (towards) {
-            towards = towards.value;
+          towards = towards.value;
         }
         const stopInfo = {
           stopLetter: stop.stopLetter,
@@ -84,13 +84,13 @@ async function getStopID(smsCode) {
 export default {
   getStopID,
   async getArrivailAtStopID(id) {
-    let response = await fetch(`${baseUrl}/StopPoint/${id}/Arrivals`);
+    const response = await fetch(`${baseUrl}/StopPoint/${id}/Arrivals`);
     return await response.json();
   },
   //not working
   async getStopInfo(id) {
-    let response = await fetch(baseUrl + "/StopPoint/" + id);
-    let json = await response.json();
+    const response = await fetch(baseUrl + "/StopPoint/" + id);
+    const json = await response.json();
     return getStopID(json.smsCode);
   },
   extractTimeFromISODateString,
