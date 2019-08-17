@@ -73,7 +73,7 @@ async function getStopID(smsCode) {
   const json = await response.json();
   if (json.total == 0) {
     console.log("No stops found");
-    return null;
+    throw new Error("No stop found");
   } else {
     console.log(json);
     let { id, towards, name, stopLetter, lines } = json.matches[0];

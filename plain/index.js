@@ -17,9 +17,12 @@ let code = "";
 
 function displayStopBySmsCode(code) {
   Service.getStopID(code).then(res => {
-    const id = res.id;
-    Service.getStopInfo(id).then(console.log);
-    showArrivalsAtStop(res);
+      const id = res.id;
+      Service.getStopInfo(id).then(console.log);
+      showArrivalsAtStop(res);
+  }).catch(err=>{
+    // TODO send info that bad code
+    console.log({err});
   });
 }
 function displayStop(code) {
@@ -32,7 +35,7 @@ function displayStop(code) {
 function updateCode() {
   for (let i = 1; i < 6; i++) {
     const el = document.getElementById("code" + i);
-    const digit = code[i - 1];
+    let digit = code[i - 1];
     if (typeof digit == "undefined") digit = "";
     el.innerText = digit;
   }
