@@ -76,7 +76,7 @@ function renderStop(stop) {
      <div class='stop-main-info'>
       <span>
        <span class='stop-name'>${stop.name}</span>
-       towards ${stop.towards}
+       ${stop.towards?` towards ${stop.towards}`:`` } 
       </span>
       <span>${stop.lines.join(", ")}</span>
     </div>
