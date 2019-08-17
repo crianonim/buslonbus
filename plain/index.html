@@ -63,9 +63,8 @@
           <div class="stop-title-line">
             <span class="letter"></span>
             <div class="stop-title-text">
-              <span class="stop-name"></span>
+              <span><span class="stop-name"></span> <span  class="make-favourite"> + </span></span>
               <span class="stop-towards"></span>
-              <div class="make-favourite">+</div>
             </div>
           </div>
           <div class="lines">
@@ -75,23 +74,28 @@
               <span>Updated at <span class="updated-at"></span></span>
               <span class="updated-ago"></span> ago.
             </span>
-            <span class="button" id="update">Update</span>
+            <span class="button update">Update</span>
           </div>
         </div>
         <!-- stop-info-->
         <div class="arrivals">
-          <div class="arrival">
-            <span class="arrival-time"> </span>
-            <span class="time-to-station"></span>
-            <span class="line-name"></span>
-            <span class="destination"></span>
-          </div>
+          
         </div>
       </div>
       <!--results-->
     </template>
+
     <template id="template-line">
             <span class="line"></span>
+    </template>
+
+    <template id="template-arrival">
+      <div class="arrival">
+        <span class="arrival-time"> </span>
+        <span class="time-to-station"></span>
+        <span class="line-name"></span>
+        <span class="destination"></span>
+      </div>
     </template>
   </body>
 </html>
