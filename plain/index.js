@@ -100,7 +100,8 @@ const renderStopComponent = (stop) => {
 function getNearby() {
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      const around = document.querySelector(".around");
+      const aroundOrig = document.querySelector(".around");
+      const around = aroundOrig.cloneNode(true);
       console.log(around);
       stops.filter(stop=>stop.lines.length)
        .map(renderStopComponent)
@@ -118,6 +119,9 @@ function getNearby() {
           // console.log("Clicked on id", ev.currentTarget.dataset.stopId)
         });
       });
+      window.requestAnimationFrame(()=>{
+        aroundOrig.replaceWith(around);
+      })
     })
     .catch(reason => {
       console.log(reason);
