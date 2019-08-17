@@ -69,8 +69,11 @@ function displaySMScodeEntry() {
     document.getElementById("digits").classList.toggle("hidden");
   });
 }
+
+const getTemplate = (id) => document.getElementById(id).cloneNode(true).content.firstElementChild;
+
 const renderStopComponent = (stop) => {
-  const el=document.getElementById('template-stop').cloneNode(true).content.firstElementChild; 
+  const el=getTemplate('template-stop'); 
   el.querySelector('.stop-name').textContent=stop.name;
   el.querySelector('.letter').textContent=(stop.stopLetter || "-").replace("->", "") ;
   el.dataset.stopId=stop.id;
@@ -158,6 +161,10 @@ function renderLine(el){
     return `
     <span class='line'>${el}</span>
     `
+}
+
+const renderResultsComponent = (stopInfo, arrivals) =>{
+  
 }
 function renderResults(stopInfo, arrivals) {
   let s = `<div class='results'>

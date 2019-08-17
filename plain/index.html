@@ -42,6 +42,8 @@
       </div>
     </div>
     <div id="console"></div>
+    
+    
     <template id="template-stop">
       <div class="stop" data-stop-id="">
         <span class="letter"></span>
@@ -53,6 +55,41 @@
           <span class="stop-lines"></span>
         </div>
       </div>
+    </template>
+
+    <template id="template-results">
+      <div class="results">
+        <div class="stop-info">
+          <div class="stop-title-line">
+            <span class="letter"></span>
+            <div class="stop-title-text">
+              <span class="stop-name"></span>
+              <span class="stop-towards"></span>
+              <div class="make-favourite">+</div>
+            </div>
+          </div>
+          <div class="lines">
+            <span class="line"></span>
+          </div>
+          <div class="update-info">
+            <span class="update-info-content">
+              <span></span>
+              <span id="updated-ago"></span> ago.
+            </span>
+            <span class="button" id="update">Update</span> ";
+          </div>
+        </div>
+        <!-- stop-info-->
+        <div class="arrivals">
+          <div class="arrival">
+            <span class="arrival-time"> </span>
+            <span class="time-to-station"></span>
+            <span class="line-name"></span>
+            <span class="destination"></span>
+          </div>
+        </div>
+      </div>
+      <!--results-->
     </template>
   </body>
 </html>
