@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>BusLonBus</title>
     <script type="module" src="index.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div id="app">
-        <div id="smsCode">
-            <div id="smsCodeToggle">SMS Code Dial</div>
-            <div id="code" class="hidden">
-                <div id="code1"></div>
-                <div id="code2"></div>
-                <div id="code3"></div>
-                <div id="code4"></div>
-                <div id="code5"></div>
-            </div>
-            <div id="digits" class="hidden">
-                <div class='digit'>1</div>
-                <div class='digit'>2</div>
-                <div class='digit'>3</div>
-                <div class='digit'>4</div>
-                <div class='digit'>5</div>
-                <div class='digit'>6</div>
-                <div class='digit'>7</div>
-                <div class='digit'>8</div>
-                <div class='digit'>9</div>
-                <div class='digit'>&lt;</div>
-                <div class='digit'>0</div>
-                <div class='digit'>X</div>
-            </div>
+      <div id="smsCode">
+        <div id="smsCodeToggle">SMS Code Dial</div>
+        <div id="code" class="hidden">
+          <div id="code1"></div>
+          <div id="code2"></div>
+          <div id="code3"></div>
+          <div id="code4"></div>
+          <div id="code5"></div>
         </div>
-        <div id="arrivals">
-
+        <div id="digits" class="hidden">
+          <div class="digit">1</div>
+          <div class="digit">2</div>
+          <div class="digit">3</div>
+          <div class="digit">4</div>
+          <div class="digit">5</div>
+          <div class="digit">6</div>
+          <div class="digit">7</div>
+          <div class="digit">8</div>
+          <div class="digit">9</div>
+          <div class="digit">&lt;</div>
+          <div class="digit">0</div>
+          <div class="digit">X</div>
         </div>
-        <div id="around"></div>
-        
+      </div>
+      <div id="arrivals"></div>
+      <div id="around">
+        <div class="around">
+          <div class="around-header">Nearby Bus stops</div>
+        </div>
+      </div>
     </div>
     <div id="console"></div>
-</body>
+    <template id="template-stop">
+      <div class="stop" data-stop-id="">
+        <span class="letter"></span>
+        <div class="stop-main-info">
+          <span>
+            <span class="stop-name"></span>
+            <span class="stop-towards"></span>
+          </span>
+          <span class="stop-lines"></span>
+        </div>
+      </div>
+    </template>
+  </body>
 </html>

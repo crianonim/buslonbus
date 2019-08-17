@@ -4,6 +4,8 @@ window.addEventListener("load", () => {
   displaySMScodeEntry();
   getNearby();
 });
+
+
 const fakeLog = s => {
   document.getElementById("console").textContent += `${JSON.stringify(s)}
   `;
@@ -67,32 +69,49 @@ function displaySMScodeEntry() {
     document.getElementById("digits").classList.toggle("hidden");
   });
 }
-function renderStop(stop) {
-  return !stop.lines.length
-    ? ""
-    : `
-    <div class='stop' data-stop-id='${stop.id}'>
-     <span class='letter'>${(stop.stopLetter || "-").replace("->", "")}</span>
-     <div class='stop-main-info'>
-      <span>
-       <span class='stop-name'>${stop.name}</span>
-       ${stop.towards?` towards ${stop.towards}`:`` } 
-      </span>
-      <span>${stop.lines.join(", ")}</span>
-    </div>
-    </div>
-       `;
+const renderStopComponent = (stop) => {
+  const el=document.getElementById('template-stop').cloneNode(true).content.firstElementChild; 
+  el.querySelector('.stop-name').textContent=stop.name;
+  el.querySelector('.letter').textContent=(stop.stopLetter || "-").replace("->", "") ;
+  el.dataset.stopId=stop.id;
+  if (stop.towards){
+    el.querySelector('.stop-towards').textContent="-> "+stop.towards;
+  }
+  el.querySelector('.stop-lines').textContent=stop.lines.join(", ");
+  return el;
 }
+
+// function renderStop(stop) {
+//   return !stop.lines.length
+//     ? ""
+//     : `
+//     <div class='stop' data-stop-id='${stop.id}'>
+//      <span class='letter'>${(stop.stopLetter || "-").replace("->", "")}</span>
+//      <div class='stop-main-info'>
+//       <span>
+//        <span class='stop-name'>${stop.name}</span>
+//        ${stop.towards?` towards ${stop.towards}`:`` } 
+//       </span>
+//       <span>${stop.lines.join(", ")}</span>
+//     </div>
+//     </div>
+//        `;
+// }
 function getNearby() {
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      const around = document.getElementById("around");
-      around.innerHTML = `
-        <div class='around'>
-         <div class='around-header'>Nearby Bus stops</div>
-         ${stops.map(renderStop).join("")}
-        </div>
-       `;
+      const around = document.querySelector(".around");
+      console.log(around);
+      stops.filter(stop=>stop.lines.length)
+       .map(renderStopComponent)
+       .forEach(around.appendChild.bind(around));
+      
+      // around.innerHTML = `
+      //   <div class='around'>
+      //    <div class='around-header'>Nearby Bus stops</div>
+      //    ${stops.map(renderStop).join("")}
+      //   </div>
+      //  `;
       around.querySelectorAll(".stop").forEach(stop => {
         stop.addEventListener("click", ev => {
           displayStop(ev.currentTarget.dataset.stopId);
