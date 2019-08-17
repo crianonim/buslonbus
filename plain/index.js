@@ -75,7 +75,7 @@ const getTemplate = (id) => document.getElementById(id).cloneNode(true).content.
 const renderStopComponent = (stop) => {
   const el=getTemplate('template-stop'); 
   el.querySelector('.stop-name').textContent=stop.name;
-  el.querySelector('.letter').textContent=(stop.stopLetter || "-").replace("->", "") ;
+  el.querySelector('.letter').textContent=stopLetterCorrected(stop.stopLetter)
   el.dataset.stopId=stop.id;
   if (stop.towards){
     el.querySelector('.stop-towards').textContent="-> "+stop.towards;
@@ -140,7 +140,7 @@ function showArrivalsAtStop(stopInfo) {
     });
     stopInfo.timestamp = Date.now();
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
-    renderResults(stopInfo, processed);
+    renderResultsComponent(stopInfo, processed);
     setInterval(updateTimes, 1000);
   });
 }
@@ -151,7 +151,7 @@ function updateTimes() {
     el.textContent = Service.secondsToTime(difference);
     // console.log(time);
   });
-  const ago = document.getElementById("updated-ago");
+  const ago = document.querySelector(".updated-ago");
   ago.textContent = Service.secondsToTime(
     ((Date.now() - ago.dataset.updatedAgo) / 1000) >> 0
   );
@@ -162,9 +162,36 @@ function renderLine(el){
     <span class='line'>${el}</span>
     `
 }
+const stopLetterCorrected = (stopLetter) =>(stopLetter || "-").replace("->", "");
 
 const renderResultsComponent = (stopInfo, arrivals) =>{
-  
+  const arrivalsOrig=document.getElementById('arrivals');
+  const arrivalsNew=arrivalsOrig.cloneNode(false);
+  const el=getTemplate('template-results');
+  el.querySelector('.letter').textContent=stopLetterCorrected(stopInfo.stopLetter);
+  el.querySelector('.stop-name').textContent=stopInfo.name;
+  if (stopInfo.towards) {
+    el.querySelector('.stop-towards').textContent="towards "+stopInfo.towards
+  }
+  const lineTemplate=getTemplate('template-line');
+  const linesDiv=el.querySelector('.lines');
+  stopInfo.lines.map(line=>{
+    const lineElement=lineTemplate.cloneNode(false);
+    if (stopInfo.linesExcluded.includes(line)){
+      lineElement.classList.add('excluded');
+    }
+    lineElement.textContent=line;
+    linesDiv.appendChild(lineElement);
+  })
+  el.querySelector('.updated-at').textContent=Service.extractTimeFromISODateString(stopInfo.timestamp)
+  const updatedAgo=el.querySelector('.updated-ago');
+  updatedAgo.dataset.updatedAgo=stopInfo.timestamp;
+  updatedAgo.textContent=Service.secondsToTime(((Date.now() - stopInfo.timestamp) / 1000) >> 0)
+  arrivalsNew.appendChild(el);
+  window.requestAnimationFrame(()=>{
+    arrivalsOrig.replaceWith(arrivalsNew);
+  })
+
 }
 function renderResults(stopInfo, arrivals) {
   let s = `<div class='results'>
