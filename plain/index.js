@@ -138,7 +138,7 @@ function renderLine(el){
 }
 function renderResults(stopInfo, arrivals) {
   let s = `<div class='results'>
-  <div class='stop-info'>";
+  <div class='stop-info'>
   <div class='stop-title-line'>
   <span class='letter'>${stopInfo.stopLetter.replace("->", "")}</span>
        <div class='stop-title-text'> 
@@ -147,7 +147,7 @@ function renderResults(stopInfo, arrivals) {
         </div>
         <div class='make-favourite'> + </div>
         </div>
-   <div class='lines'>"`;
+   <div class='lines'>`;
   stopInfo.lines.forEach(el => {
     let isExcluded = stopInfo.linesExcluded.includes(el) ? "excluded" : "";
     s += `<span class='line ${isExcluded}'>${el}</span>`;
