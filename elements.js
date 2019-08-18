@@ -64,5 +64,36 @@ class BusLine extends HTMLElement {
         shadow.appendChild(span);
     }
 }
+{/* <div class="stop" data-stop-id="">
+        <span class="letter"></span>
+        <div class="stop-main-info">
+          <span>
+            <span class="stop-name"></span>
+            <span class="stop-towards"></span>
+          </span>
+          <span class="stop-lines"></span>
+        </div>
+      </div> */}
+class BusStop extends HTMLElement {
+   
+    connectedCallback(){
+        const shadow = this.attachShadow({
+            mode: 'open'
+        });
+        if (!this.hasAttribute('stop')) return;
+        const stop=JSON.parse(this.getAttribute('stop'));
+        const stopDiv=document.createElement('div');
+        stopDiv.classList.add('stop');
+        stopDiv.dataset.stopId=stop.id;
+        
+        const letterSpan = document.createElement('span');
+        letterSpan.classList.add('letter');
+        letterSpan.textContent=stop.stopLetter;
+        stopDiv.appendChild(letterSpan);
+        
+        shadow.appendChild(stopDiv);
+    }
+}
+customElements.define('bus-stop',BusStop)
 customElements.define('popup-info', PopUpInfo);
 customElements.define('bus-line', BusLine);

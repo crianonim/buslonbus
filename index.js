@@ -77,6 +77,9 @@ const displaySMScodeEntry = () => {
 const getTemplate = (id) => document.getElementById(id).cloneNode(true).content.firstElementChild;
 
 const renderStopComponent = (stop) => {
+    const se=document.createElement('bus-stop');
+    se.setAttribute('stop',JSON.stringify(stop));
+    return se;
     const el = getTemplate('template-stop');
     el.querySelector('.stop-name').textContent = stop.name;
     el.querySelector('.letter').textContent = stopLetterCorrected(stop.stopLetter)
