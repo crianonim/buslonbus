@@ -83,8 +83,8 @@ class BusStop extends HTMLElement {
         // const shadow = this.attachShadow({
         //     mode: 'open'
         // });
-        if (!this.hasAttribute('stop')) return;
-        const stop = JSON.parse(this.getAttribute('stop'));
+        if (!this.dataset.stop) return;
+        const stop = JSON.parse(this.dataset.stop);
         const stopDiv=$('div', {
             className: 'stop',
             dataset: {

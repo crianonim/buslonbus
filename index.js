@@ -1,5 +1,6 @@
 import Service from "./service.js";
 import './elements.js';
+import $ from './dom.js';
 
 window.addEventListener("load", () => {
     displaySMScodeEntry();
@@ -76,37 +77,41 @@ const displaySMScodeEntry = () => {
 
 const getTemplate = (id) => document.getElementById(id).cloneNode(true).content.firstElementChild;
 
-const renderStopComponent = (stop) => {
-    const se=document.createElement('bus-stop');
-    se.setAttribute('stop',JSON.stringify(stop));
-    return se;
-    const el = getTemplate('template-stop');
-    el.querySelector('.stop-name').textContent = stop.name;
-    el.querySelector('.letter').textContent = stopLetterCorrected(stop.stopLetter)
-    el.dataset.stopId = stop.id;
-    if (stop.towards) {
-        el.querySelector('.stop-towards').textContent = "-> " + stop.towards;
+const renderStopComponent = (stop) => $('bus-stop', {
+    dataset: {
+        stop: JSON.stringify(stop)
     }
-    el.querySelector('.stop-lines').textContent = stop.lines.join(", ");
+})
+
+const replaceElement = (orignal, cb) => {
+    const el = orignal.cloneNode(true);
+    window.requestAnimationFrame(() => {
+        orignal.replaceWith(el);
+        if (cb) cb();
+    })
     return el;
 }
 
 const getNearby = () => {
     Service.getStopsWithinRadius(500)
         .then(stops => {
-            const aroundOrig = document.querySelector(".around");
-            const around = aroundOrig.cloneNode(true);
+            const around = replaceElement(document.querySelector(".around"), () => {
+                around.querySelectorAll(".stop").forEach(stop => {
+                    console.log({
+                        stop
+                    })
+                    stop.addEventListener("click", ev => {
+                        console.log(ev)
+                        displayStop(ev.currentTarget.dataset.stopId);
+                    });
+                });
+            })
             stops.filter(stop => stop.lines.length)
                 .map(renderStopComponent)
                 .forEach(around.appendChild.bind(around));
-            around.querySelectorAll(".stop").forEach(stop => {
-                stop.addEventListener("click", ev => {
-                    displayStop(ev.currentTarget.dataset.stopId);
-                });
-            });
-            window.requestAnimationFrame(() => {
-                aroundOrig.replaceWith(around);
-            })
+
+
+
         })
         .catch(reason => {
             console.log(reason);
@@ -148,11 +153,11 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     // const lineTemplate = getTemplate('template-line');
     const linesDiv = el.querySelector('.lines');
     stopInfo.lines.forEach(line => {
-        const lineElement=document.createElement('bus-line');
+        const lineElement = document.createElement('bus-line');
         if (stopInfo.linesExcluded.includes(line)) {
-            lineElement.setAttribute('excluded',true);
+            lineElement.setAttribute('excluded', true);
         }
-        lineElement.setAttribute('line',line);
+        lineElement.setAttribute('line', line);
         linesDiv.appendChild(lineElement);
     })
     el.querySelector('.updated-at').textContent = Service.extractTimeFromISODateString(stopInfo.timestamp)
@@ -176,7 +181,7 @@ const renderResultsComponent = (stopInfo, arrivals) => {
         .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
 
     el.querySelector(".lines").addEventListener("click", ev => {
-        if (ev.target.tagName==="BUS-LINE") {
+        if (ev.target.tagName === "BUS-LINE") {
             let lineName = ev.target.getAttribute('line');
             if (stopInfo.linesExcluded.includes(lineName)) {
                 stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
