@@ -26,7 +26,6 @@ body {
     padding: 2px;   
     margin:2px;
 }
-
 .letter {
     background-color: red;
     color:white;
@@ -113,7 +112,7 @@ body {
 .hidden{
     display: none!Important;
 }
-.around > .stop {
+.around  .stop {
     display: flex;
     margin: 10px 0;
     align-items: center;

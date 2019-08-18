@@ -80,9 +80,9 @@ class BusLine extends HTMLElement {
 class BusStop extends HTMLElement {
 
     connectedCallback() {
-        const shadow = this.attachShadow({
-            mode: 'open'
-        });
+        // const shadow = this.attachShadow({
+        //     mode: 'open'
+        // });
         if (!this.hasAttribute('stop')) return;
         const stop = JSON.parse(this.getAttribute('stop'));
         const stopDiv=$('div', {
@@ -90,11 +90,18 @@ class BusStop extends HTMLElement {
             dataset: {
                 stopId: stop.id
             }
-        }, shadow);
+        }, this);
         $('span', {
             className: "letter",
             textContent: stop.stopLetter
         }, stopDiv)
+        const stopMainInfo=$('div',{className:"stop-main-info"},stopDiv);
+        const span=$('span',{},stopMainInfo);
+        $('span',{className:"stop-name",textContent:stop.name},span);
+        if (stop.towards){
+            $('span',{className:"stop-towards",textContent:" -> "+stop.towards},span)
+        }
+        $('span',{className:"stop-lines",textContent:stop.lines.join(', ')},stopMainInfo);
         
     }
 }
