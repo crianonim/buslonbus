@@ -1,3 +1,5 @@
+import $ from './dom.js';
+
 class PopUpInfo extends HTMLElement {
     constructor() {
         // Always call super first in constructor
@@ -55,45 +57,47 @@ class BusLine extends HTMLElement {
         });
         const span = document.createElement('span');
         span.classList.add('line');
-        if (this.hasAttribute('line')){
-            span.textContent=this.getAttribute('line');
+        if (this.hasAttribute('line')) {
+            span.textContent = this.getAttribute('line');
         }
-        if (this.hasAttribute('excluded')){
+        if (this.hasAttribute('excluded')) {
             this.classList.add('excluded')
         }
         shadow.appendChild(span);
     }
+} {
+    /* <div class="stop" data-stop-id="">
+            <span class="letter"></span>
+            <div class="stop-main-info">
+              <span>
+                <span class="stop-name"></span>
+                <span class="stop-towards"></span>
+              </span>
+              <span class="stop-lines"></span>
+            </div>
+          </div> */
 }
-{/* <div class="stop" data-stop-id="">
-        <span class="letter"></span>
-        <div class="stop-main-info">
-          <span>
-            <span class="stop-name"></span>
-            <span class="stop-towards"></span>
-          </span>
-          <span class="stop-lines"></span>
-        </div>
-      </div> */}
 class BusStop extends HTMLElement {
-   
-    connectedCallback(){
+
+    connectedCallback() {
         const shadow = this.attachShadow({
             mode: 'open'
         });
         if (!this.hasAttribute('stop')) return;
-        const stop=JSON.parse(this.getAttribute('stop'));
-        const stopDiv=document.createElement('div');
-        stopDiv.classList.add('stop');
-        stopDiv.dataset.stopId=stop.id;
+        const stop = JSON.parse(this.getAttribute('stop'));
+        const stopDiv=$('div', {
+            className: 'stop',
+            dataset: {
+                stopId: stop.id
+            }
+        }, shadow);
+        $('span', {
+            className: "letter",
+            textContent: stop.stopLetter
+        }, stopDiv)
         
-        const letterSpan = document.createElement('span');
-        letterSpan.classList.add('letter');
-        letterSpan.textContent=stop.stopLetter;
-        stopDiv.appendChild(letterSpan);
-        
-        shadow.appendChild(stopDiv);
     }
 }
-customElements.define('bus-stop',BusStop)
+customElements.define('bus-stop', BusStop)
 customElements.define('popup-info', PopUpInfo);
 customElements.define('bus-line', BusLine);
