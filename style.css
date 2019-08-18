@@ -134,3 +134,13 @@ body {
     border:solid 1px black;
     text-align: center;
 }
+bus-line {
+    border: 1px solid black;
+    padding: 2px;   
+    margin:2px;
+}
+
+bus-line .excluded {
+    color:grey;
+    border-color: grey;
+}

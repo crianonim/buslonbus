@@ -1,4 +1,5 @@
 import Service from "./service.js";
+import './elements.js';
 
 window.addEventListener("load", () => {
     displaySMScodeEntry();
@@ -141,14 +142,14 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     if (stopInfo.towards) {
         el.querySelector('.stop-towards').textContent = "towards " + stopInfo.towards
     }
-    const lineTemplate = getTemplate('template-line');
+    // const lineTemplate = getTemplate('template-line');
     const linesDiv = el.querySelector('.lines');
     stopInfo.lines.forEach(line => {
-        const lineElement = lineTemplate.cloneNode(false);
+        const lineElement=document.createElement('bus-line');
         if (stopInfo.linesExcluded.includes(line)) {
-            lineElement.classList.add('excluded');
+            lineElement.setAttribute('excluded',true);
         }
-        lineElement.textContent = line;
+        lineElement.setAttribute('line',line);
         linesDiv.appendChild(lineElement);
     })
     el.querySelector('.updated-at').textContent = Service.extractTimeFromISODateString(stopInfo.timestamp)
@@ -172,8 +173,8 @@ const renderResultsComponent = (stopInfo, arrivals) => {
         .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
 
     el.querySelector(".lines").addEventListener("click", ev => {
-        if (ev.target.classList.contains("line")) {
-            let lineName = ev.target.textContent;
+        if (ev.target.tagName==="BUS-LINE") {
+            let lineName = ev.target.getAttribute('line');
             if (stopInfo.linesExcluded.includes(lineName)) {
                 stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
                     el => el != lineName
