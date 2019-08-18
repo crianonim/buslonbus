@@ -25,6 +25,9 @@ function extractArrivalInfo(arr) {
 function sortByArrivalTime(arr) {
   return arr.sort((a, b) => a.timeToStation - b.timeToStation);
 }
+
+
+const stopLetterCorrected = (stopLetter) => (stopLetter || "-").replace("->", "");
 function secondsToTime(s) {
   if (s < 0) return "due";
   const mins = (s / 60) >> 0;
@@ -55,7 +58,7 @@ async function getStopsWithinRadius(r = 200) {
           towards = towards.value;
         }
         const stopInfo = {
-          stopLetter: stop.stopLetter,
+          stopLetter: stopLetterCorrected( stop.stopLetter),
           lines,
           id: stop.id,
           name: stop.commonName,
@@ -78,7 +81,7 @@ async function getStopID(smsCode) {
     console.log(json);
     let { id, towards, name, stopLetter, lines } = json.matches[0];
     lines = lines.map(el => el.name);
-    return { id, towards, name, stopLetter, lines };
+    return { id, towards, name, stopLetter:stopLetterCorrected(stopLetter), lines };
   }
 }
 export default {
