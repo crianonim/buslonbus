@@ -83,8 +83,8 @@ const renderStopComponent = (stop) => $('bus-stop', {
     }
 })
 
-const replaceElement = (orignal, cb) => {
-    const el = orignal.cloneNode(true);
+const replaceElement = (orignal, cloneDeep=true, cb) => {
+    const el = orignal.cloneNode(cloneDeep);
     window.requestAnimationFrame(() => {
         orignal.replaceWith(el);
         if (cb) cb();
@@ -95,13 +95,9 @@ const replaceElement = (orignal, cb) => {
 const getNearby = () => {
     Service.getStopsWithinRadius(500)
         .then(stops => {
-            const around = replaceElement(document.querySelector(".around"), () => {
+            const around = replaceElement(document.querySelector(".around"), true,() => {
                 around.querySelectorAll(".stop").forEach(stop => {
-                    console.log({
-                        stop
-                    })
                     stop.addEventListener("click", ev => {
-                        console.log(ev)
                         displayStop(ev.currentTarget.dataset.stopId);
                     });
                 });
@@ -109,9 +105,6 @@ const getNearby = () => {
             stops.filter(stop => stop.lines.length)
                 .map(renderStopComponent)
                 .forEach(around.appendChild.bind(around));
-
-
-
         })
         .catch(reason => {
             console.log(reason);
