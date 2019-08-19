@@ -143,3 +143,23 @@ bus-line .excluded {
     color:grey;
     border-color: grey;
 }
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+.tab {
+    padding: 5px;
+    flex-grow: 1;
+    text-align: center;
+    margin: 1px;
+    background-color: beige;
+}
+.tab.tab-active {
+    background-color: bisque;
+    font-weight: bold;
+}
