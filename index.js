@@ -20,7 +20,14 @@ const setupTabs = () => {
   selectTab(0)
 };
 const selectTab = tab => {
-    console.log(tab);
+    document.querySelectorAll('.tab').forEach( (tabEl,i)=>{
+        if (i===tab){
+            tabEl.classList.add('tab-active');
+        } else {
+            tabEl.classList.remove('tab-active');
+        }
+    })
+    //TODO route
   };
 const fakeLog = s => {
   document.getElementById("console").textContent += `${JSON.stringify(s)}
