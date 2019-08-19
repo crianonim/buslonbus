@@ -99,10 +99,7 @@ const displaySMScodeEntry = () => {
       updateCode();
     }
   });
-  document.getElementById("smsCodeToggle").addEventListener("click", () => {
-    document.getElementById("code").classList.toggle("hidden");
-    document.getElementById("digits").classList.toggle("hidden");
-  });
+  
 };
 
 const getTemplate = id =>
