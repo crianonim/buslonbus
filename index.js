@@ -27,7 +27,13 @@ const selectTab = tab => {
             tabEl.classList.remove('tab-active');
         }
     })
-    //TODO route
+    document.querySelectorAll('.tab-item').forEach( (item,i)=>{
+        if (i===tab){
+            item.classList.remove('hidden')
+        } else {
+            item.classList.add('hidden');
+        }
+    })
   };
 const fakeLog = s => {
   document.getElementById("console").textContent += `${JSON.stringify(s)}

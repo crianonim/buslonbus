@@ -11,13 +11,20 @@
   <body>
     <div id="app">
       <nav>
-      <ul class="tabs">
-        <li class="tab">Nearby</li>
-        <li class="tab tab-active">Dial</li>
-        <li class="tab">Stars</li>
-      </ul>
-    </nav>
-      <div id="smsCode">
+        <ul class="tabs">
+          <li class="tab">Nearby</li>
+          <li class="tab tab-active">Dial</li>
+          <li class="tab">Stars</li>
+        </ul>
+      </nav>
+      <div id="arrivals">Arrivals block</div>
+
+      <div class="tab-item" id="around">
+          <div class="around">
+            <div class="around-header">Nearby Bus stops</div>
+          </div>
+        </div>
+      <div class="tab-item" id="smsCode">
         <div id="smsCodeToggle">SMS Code Dial</div>
         <div id="code" class="hidden">
           <div id="code1"></div>
@@ -41,28 +48,26 @@
           <div class="digit">X</div>
         </div>
       </div>
-      <div id="arrivals"></div>
-      <div id="around">
-        <div class="around">
-          <div class="around-header">Nearby Bus stops</div>
-        </div>
-      </div>
+      
+      <div class="tab-item around-header">Stars</div>
     </div>
-    <div id="console"></div>
     
-   
+    <div id="console"></div>
+
     <template id="template-results">
       <div class="results">
         <div class="stop-info">
           <div class="stop-title-line">
             <span class="letter"></span>
             <div class="stop-title-text">
-              <span><span class="stop-name"></span> <span  class="make-favourite"> + </span></span>
+              <span
+                ><span class="stop-name"></span>
+                <span class="make-favourite"> + </span></span
+              >
               <span class="stop-towards"></span>
             </div>
           </div>
-          <div class="lines">
-          </div>
+          <div class="lines"></div>
           <div class="update-info">
             <span class="update-info-content">
               <span>Updated at <span class="updated-at"></span></span>
@@ -72,13 +77,10 @@
           </div>
         </div>
         <!-- stop-info-->
-        <div class="arrivals">
-          
-        </div>
+        <div class="arrivals"></div>
       </div>
       <!--results-->
     </template>
-
 
     <template id="template-arrival">
       <div class="arrival">
@@ -88,7 +90,5 @@
         <span class="destination"></span>
       </div>
     </template>
-  
-
   </body>
 </html>
