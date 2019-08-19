@@ -17,6 +17,7 @@ const clearStarred = () => {
 }
 
 const test=()=>{
+  const old=localStorage.getItem(storageItem);
 clearStarred();
 console.log(getStarred());
 addStarred(12);
@@ -27,7 +28,8 @@ console.log(getStarred());
 console.log(removeStarred(12));
 console.log(getStarred());
 clearStarred();
-console.log(getStarred())
+console.log(getStarred());
+localStorage.setItem(storageItem,old);
 }
 
 export default {
