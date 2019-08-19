@@ -1,6 +1,7 @@
 import Service from "./service.js";
 import "./elements.js";
 import $ from "./dom.js";
+import "./storage.js";
 
 window.addEventListener("load", () => {
   setupTabs();

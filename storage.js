@@ -1,16 +1,24 @@
-const storageItem = "collections";
+const storageItem = "starredStops";
 
-const getCollections = () => JSON.parse(localStorage.getItem(storageItem));
-const addCollection = collection => {
-  localStorage.setItem(storageItem, [...getCollections(), collection]);
+const getStarred = () => JSON.parse(localStorage.getItem(storageItem));
+const setStarred = arr => { localStorage.setItem(storageItem,JSON.stringify(arr))};
+const addStarred = starred => {
+  const newStarred=[...getStarred(), starred];
+  setStarred(newStarred);
+  return newStarred;
 };
-
-const addStopToCollections = stop => {
-  addCollection({ stops: [stop], single: true });
-};
+const removeStarred = id => {
+  const newStarred = getStarred().filter(el=>el!=id);
+  setStarred(newStarred)
+}
+const clearStarred = () => {
+  setStarred([]);
+}
 
 export default {
-  getCollections,
-  addCollection,
-  addStopToCollections,
+  getStarred,
+  setStarred,
+  addStarred,
+  removeStarred,
+  clearStarred
 };
