@@ -124,7 +124,7 @@ const showArrivalsAtStop = (stopInfo) => {
 
 const updateTimes = () => {
     document.querySelectorAll(".time-to-station").forEach(el => {
-        const time = el.dataset.arrivalTime;
+        const time = el.parentElement.parentElement.dataset.arrivalTime;
         const difference = Service.timeDifference(new Date(), time);
         el.textContent = Service.secondsToTime(difference);
     });
@@ -162,13 +162,19 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     arrivals
         .filter(arr => !stopInfo.linesExcluded.includes(arr.lineName))
         .map(arrival => {
-            const arrivalElement = getTemplate('template-arrival');
-            arrivalElement.querySelector('.arrival-time').textContent = Service.extractTimeFromISODateString(arrival.expectedArrival);
-            const timeToStation = arrivalElement.querySelector('.time-to-station');
-            timeToStation.dataset.arrivalTime = arrival.expectedArrival;
-            timeToStation.textContent = Service.secondsToTime(Service.timeDifference(new Date(), arrival.expectedArrival));
-            arrivalElement.querySelector('.line-name').textContent = arrival.lineName;
-            arrivalElement.querySelector('.destination').textContent = arrival.destinationName;
+            //to be moved to Service
+            arrival.timeToStation= Service.secondsToTime(Service.timeDifference(new Date(), arrival.expectedArrival));
+            arrival.arrivalTime=Service.extractTimeFromISODateString(arrival.expectedArrival);
+            const arrivalElement=document.createElement('bus-arrival');
+            arrivalElement.dataset.arrivalTime = arrival.expectedArrival;
+            arrivalElement.setAttribute('arrival',JSON.stringify(arrival));
+            // const arrivalElement = getTemplate('template-arrival');
+            // arrivalElement.querySelector('.arrival-time').textContent = Service.extractTimeFromISODateString(arrival.expectedArrival);
+            // const timeToStation = arrivalElement.querySelector('.time-to-station');
+            // timeToStation.dataset.arrivalTime = arrival.expectedArrival;
+            // timeToStation.textContent = Service.secondsToTime(Service.timeDifference(new Date(), arrival.expectedArrival));
+            // arrivalElement.querySelector('.line-name').textContent = arrival.lineName;
+            // arrivalElement.querySelector('.destination').textContent = arrival.destinationName;
             return arrivalElement;
         })
         .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
@@ -195,3 +201,7 @@ const renderResultsComponent = (stopInfo, arrivals) => {
         arrivalsOrig.replaceWith(arrivalsNew);
     })
 }
+
+const ba=document.createElement('bus-arrival');
+ba.setAttribute('bus','n55');
+document.body.appendChild(ba);
