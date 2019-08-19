@@ -1,7 +1,7 @@
 import Service from "./service.js";
 import "./elements.js";
 import $ from "./dom.js";
-import "./storage.js";
+import storage from "./storage.js";
 
 window.addEventListener("load", () => {
   setupTabs();
@@ -249,7 +249,3 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     arrivalsOrig.replaceWith(arrivalsNew);
   });
 };
-
-const ba = document.createElement("bus-arrival");
-ba.setAttribute("bus", "n55");
-document.body.appendChild(ba);
