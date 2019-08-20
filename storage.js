@@ -15,6 +15,12 @@ const removeStarred = id => {
 const clearStarred = () => {
   setStarred([]);
 }
+const isStarred = id => {
+  return Boolean(getStarred().find(el=>el===id))
+}
+const toggleStarred = id => {
+  return isStarred(id) ? removeStarred(id) : addStarred(id);
+}
 
 const test=()=>{
   const old=localStorage.getItem(storageItem);
@@ -25,7 +31,13 @@ console.log(addStarred(32));
 console.log(getStarred());
 removeStarred(0);
 console.log(getStarred());
+console.log(isStarred(12));
 console.log(removeStarred(12));
+console.log(isStarred(12));
+console.log(toggleStarred(12))
+console.log(isStarred(12));
+console.log(toggleStarred(12))
+console.log(isStarred(12));
 console.log(getStarred());
 clearStarred();
 console.log(getStarred());
@@ -35,6 +47,8 @@ localStorage.setItem(storageItem,old);
 export default {
   getStarred,
   setStarred,
+  isStarred,
+  toggleStarred,
   addStarred,
   removeStarred,
   clearStarred,

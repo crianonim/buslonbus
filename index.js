@@ -9,6 +9,13 @@ window.addEventListener("load", () => {
   getNearby();
 });
 
+const renderAllStarred = ()=>{
+  const starredDiv=document.querySelector('#starred');
+  let starred=storage.getStarred();
+  starred.forEach(stop=>{
+    $('test-stop',{textContent:stop},starredDiv);
+  })
+}
 
 const setupTabs = () => {
   document.querySelectorAll(".tab").forEach(tab => {
@@ -20,6 +27,7 @@ const setupTabs = () => {
   });
   selectTab(0)
 };
+
 const selectTab = tab => {
     document.querySelectorAll('.tab').forEach( (tabEl,i)=>{
         if (i===tab){
@@ -234,7 +242,9 @@ const renderResultsComponent = (stopInfo, arrivals) => {
       renderResultsComponent(stopInfo, arrivals);
     }
   });
-
+  el.querySelector('.make-favourite').addEventListener('click',()=>{
+    const id=stopInfo.id;
+  })
   el.querySelector(".update").addEventListener("click", () => {
     showArrivalsAtStop(stopInfo);
   });
@@ -243,4 +253,5 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     arrivalsOrig.replaceWith(arrivalsNew);
   });
 };
+renderAllStarred();
 storage.test();
