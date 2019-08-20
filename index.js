@@ -191,6 +191,9 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     el.querySelector(".stop-towards").textContent =
       "towards " + stopInfo.towards;
   }
+  if (storage.isStarred(stopInfo.id)){
+    el.querySelector('.make-favourite').classList.add('starred');
+  }
   // const lineTemplate = getTemplate('template-line');
   const linesDiv = el.querySelector(".lines");
   stopInfo.lines.forEach(line => {
@@ -243,7 +246,7 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     }
   });
   el.querySelector('.make-favourite').addEventListener('click',()=>{
-    const id=stopInfo.id;
+    console.log(storage.toggleStarred(stopInfo.id));
   })
   el.querySelector(".update").addEventListener("click", () => {
     showArrivalsAtStop(stopInfo);

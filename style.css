@@ -112,6 +112,9 @@ body {
 .hidden{
     display: none!Important;
 }
+.starred {
+    color:pink;
+}
 .around  .stop {
     display: flex;
     margin: 10px 0;
