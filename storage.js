@@ -1,6 +1,6 @@
 const storageItem = "starredStops";
 
-const getStarred = () => JSON.parse(localStorage.getItem(storageItem));
+const getStarred = () => JSON.parse(localStorage.getItem(storageItem))||[];
 const setStarred = arr => { localStorage.setItem(storageItem,JSON.stringify(arr))};
 const addStarred = starred => {
   const newStarred=[...getStarred(), starred];
