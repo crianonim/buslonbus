@@ -3,6 +3,10 @@ import "./elements.js";
 import $ from "./dom.js";
 import storage from "./storage.js";
 
+const state={
+  updating:false
+}
+
 window.addEventListener("load", () => {
   setupTabs();
   displaySMScodeEntry();
@@ -72,6 +76,7 @@ const displayStopBySmsCode = code => {
 };
 
 const displayStop = code => {
+  state.updating=false;
   const arrivalElement=document.querySelector('#arrivals');
   arrivalElement.textContent="Loading arrivals at stop "+code;
   Service.getStopInfo(code).then(res => {
@@ -167,10 +172,12 @@ const showArrivalsAtStop = stopInfo => {
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
     renderResultsComponent(stopInfo, processed);
     setInterval(updateTimes, 1000);
+    state.updating=true;
   });
 };
 
 const updateTimes = () => {
+  if (!state.updating) return;
   document.querySelectorAll(".time-to-station").forEach(el => {
     const time = el.parentElement.parentElement.dataset.arrivalTime;
     const difference = Service.timeDifference(new Date(), time);
