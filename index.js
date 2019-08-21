@@ -15,7 +15,22 @@ window.addEventListener("load", () => {
 });
 
 const displayStarred = () =>{
-  
+  const stops = storage.getStarred();
+  const around = replaceElement(
+    document.querySelector(".stops-list"),
+    true,
+    () => {
+      around.querySelectorAll(".stop").forEach(stop => {
+        stop.addEventListener("click", ev => {
+          displayStop(ev.currentTarget.dataset.stopId);
+        });
+      });
+    }
+  );
+  stops
+    .filter(stop => stop.lines.length)
+    .map(renderStopComponent)
+    .forEach(around.appendChild.bind(around));
 }
 const renderAllStarred = ()=>{
   const starredDiv=document.querySelector('#starred');
