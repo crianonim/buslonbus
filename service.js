@@ -43,14 +43,12 @@ async function getStopsWithinRadius(r = 200) {
   return new Promise(resolve => {
     navigator.geolocation.getCurrentPosition(async pos => {
       const { coords } = pos;
-      console.log(coords);
       const lat = coords.latitude;
       const lon = coords.longitude;
       const response = await fetch(
         `${baseUrl}/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius=${r}&lat=${lat}&lon=${lon}`
       );
       const json = await response.json();
-      console.log(json.stopPoints.length);
       const stops = json.stopPoints.map(stop => {
         const lines = stop.lines.map(el => el.name);
         let towards = stop.additionalProperties.find(el => el.key == "Towards");
@@ -75,10 +73,8 @@ async function getStopID(smsCode) {
   const response = await fetch(`${baseUrl}/StopPoint/Search?query=${smsCode}`);
   const json = await response.json();
   if (json.total == 0) {
-    console.log("No stops found");
     throw new Error("No stop found");
   } else {
-    console.log(json);
     let { id, towards, name, stopLetter, lines } = json.matches[0];
     lines = lines.map(el => el.name);
     return { id, towards, name, stopLetter:stopLetterCorrected(stopLetter), lines };

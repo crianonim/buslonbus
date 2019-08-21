@@ -163,10 +163,7 @@ const getNearby = () => {
 };
 
 const showArrivalsAtStop = stopInfo => {
-  const id = stopInfo.id;
-  console.log(stopInfo)
-  
-  Service.getArrivailAtStopID(id).then(arr => {
+  Service.getArrivailAtStopID(stopInfo.id).then(arr => {
     const processed = Service.sortByArrivalTime(arr);
     stopInfo.timestamp = Date.now();
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
