@@ -57,20 +57,7 @@ class BusStop extends HTMLElement {
     }
 }
 class BusArrival extends HTMLElement {
-    // const arrivalElement = getTemplate('template-arrival');
-    // arrivalElement.querySelector('.arrival-time').textContent = Service.extractTimeFromISODateString(arrival.expectedArrival);
-    // const timeToStation = arrivalElement.querySelector('.time-to-station');
-    // timeToStation.dataset.arrivalTime = arrival.expectedArrival;
-    // timeToStation.textContent = Service.secondsToTime(Service.timeDifference(new Date(), arrival.expectedArrival));
-    // arrivalElement.querySelector('.line-name').textContent = arrival.lineName;
-    // arrivalElement.querySelector('.destination').textContent = arrival.destinationName;
-    //     <div class="arrival">
-    //     <span class="arrival-time"> </span>
-    //     <span class="time-to-station"></span>
-    //     <span class="line-name"></span>
-    //     <span class="destination"></span>
-    //   </div>
-
+   
     connectedCallback() {
         const arrival = JSON.parse(this.getAttribute('arrival') || "null");
         if (!arrival) return;

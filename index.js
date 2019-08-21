@@ -56,10 +56,11 @@ if (location.search === "?debug") {
 let code = "";
 
 const displayStopBySmsCode = code => {
+  
   Service.getStopID(code)
     .then(res => {
       const id = res.id;
-      Service.getStopInfo(id).then(console.log);
+      // Service.getStopInfo(id).then(console.log);
       showArrivalsAtStop(res);
     })
     .catch(err => {
@@ -71,6 +72,8 @@ const displayStopBySmsCode = code => {
 };
 
 const displayStop = code => {
+  const arrivalElement=document.querySelector('#arrivals');
+  arrivalElement.textContent="Loading arrivals at stop "+code;
   Service.getStopInfo(code).then(res => {
     const id = res.id;
     Service.getStopInfo(id).then(console.log);
@@ -156,6 +159,8 @@ const getNearby = () => {
 
 const showArrivalsAtStop = stopInfo => {
   const id = stopInfo.id;
+  console.log(stopInfo)
+  
   Service.getArrivailAtStopID(id).then(arr => {
     const processed = Service.sortByArrivalTime(arr);
     stopInfo.timestamp = Date.now();
