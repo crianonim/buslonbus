@@ -246,7 +246,7 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     }
   });
   el.querySelector('.make-favourite').addEventListener('click',()=>{
-    console.log(storage.toggleStarred(stopInfo.id));
+    console.log(storage.toggleStarred(stopInfo));
   })
   el.querySelector(".update").addEventListener("click", () => {
     showArrivalsAtStop(stopInfo);
