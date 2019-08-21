@@ -11,8 +11,12 @@ window.addEventListener("load", () => {
   setupTabs();
   displaySMScodeEntry();
   getNearby();
+  displayStarred();
 });
 
+const displayStarred = () =>{
+  
+}
 const renderAllStarred = ()=>{
   const starredDiv=document.querySelector('#starred');
   let starred=storage.getStarred();
