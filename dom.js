@@ -22,3 +22,8 @@ export const replaceElement = (orignal, cloneDeep = true, cb) => {
     });
     return el;
   };
+   
+  // on animFrame and removeChild
+  export const clearElement = (el)=>{
+      el.innerHTML="";
+  }

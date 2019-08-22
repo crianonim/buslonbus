@@ -166,3 +166,12 @@ bus-line .excluded {
     background-color: bisque;
     font-weight: bold;
 }
+.close-stop-btn {
+    border: 1px solid black;
+    width: 2rem;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@ import Service from "./service.js";
 import "./elements.js";
 import storage from "./storage.js";
 
-import { domElementCreate as $, replaceElement } from "./dom.js";
+import { domElementCreate as $, replaceElement, clearElement } from "./dom.js";
 
 const state = {
   updating: false
@@ -13,6 +13,7 @@ window.addEventListener("load", () => {
   renderNearby();
   renderSMScodeEntry();
   renderStarred();
+  setInterval(updateTimes, 1000);
 });
 
 // Show console.log messages in browser window
@@ -155,7 +156,6 @@ const renderStopArrivals = stopInfo => {
     stopInfo.timestamp = Date.now();
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
     renderUpdatingArrivalsComponent(stopInfo, processed);
-    setInterval(updateTimes, 1000);
     state.updating = true;
   });
 };
@@ -206,6 +206,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   el.querySelector(".update").addEventListener("click", () => {
     renderStopArrivals(stopInfo);
   });
+  el.querySelector(".close-stop-btn").addEventListener("click",closeButtonHandler);
   arrivalsNew.appendChild(el);
 };
 
@@ -268,6 +269,11 @@ const activateBusLinesToggle = (el, stopInfo, arrivals) => {
     }
   });
 };
+
+const closeButtonHandler = ()=>{
+  state.updating=false;
+  clearElement(document.querySelector('#arrivals'));
+}
 
 // starred
 const renderStarred = () => {
