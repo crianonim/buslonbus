@@ -1,5 +1,5 @@
-import $ from './dom.js';
-
+// import $ from './dom.js';
+import { domElementCreate as $} from "./dom.js";
 
 class BusLine extends HTMLElement {
     connectedCallback() {

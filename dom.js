@@ -1,4 +1,4 @@
-const domElementCreate = (tag,attrs,parent)=>{
+export const domElementCreate = (tag,attrs,parent)=>{
     let el=document.createElement(tag);
     Object.entries(attrs).forEach( ([key,value])=>{
         if (key==='dataset'){
@@ -14,5 +14,11 @@ const domElementCreate = (tag,attrs,parent)=>{
     }
     return el;
 }
-
-export default domElementCreate;
+export const replaceElement = (orignal, cloneDeep = true, cb) => {
+    const el = orignal.cloneNode(cloneDeep);
+    window.requestAnimationFrame(() => {
+      orignal.replaceWith(el);
+      if (cb) cb();
+    });
+    return el;
+  };

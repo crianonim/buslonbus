@@ -1,7 +1,8 @@
 import Service from "./service.js";
 import "./elements.js";
-import $ from "./dom.js";
 import storage from "./storage.js";
+
+import { domElementCreate as $, replaceElement } from "./dom.js";
 
 const state={
   updating:false
@@ -75,8 +76,9 @@ if (location.search === "?debug") {
 }
 let code = "";
 
+// DIAL SMS CODE section
+
 const displayStopBySmsCode = code => {
-  
   Service.getStopID(code)
     .then(res => {
       const id = res.id;
@@ -91,18 +93,7 @@ const displayStopBySmsCode = code => {
     });
 };
 
-const renderStop = code => {
-  state.updating=false;
-  const arrivalElement=document.querySelector('#arrivals');
-  arrivalElement.textContent="Loading arrivals at stop "+code;
-  Service.getStopInfo(code).then(res => {
-    const id = res.id;
-    Service.getStopInfo(id).then(console.log);
-    renderStopArrivals(res);
-  });
-};
-
-const updateCode = () => {
+const updateSMSCode = () => {
   for (let i = 1; i < 6; i++) {
     const el = document.getElementById("code" + i);
     let digit = code[i - 1];
@@ -129,15 +120,24 @@ const displaySMScodeEntry = () => {
           }
         }
       }
-      updateCode();
+      updateSMSCode();
     }
   });
-  
 };
 
 const getTemplate = id =>
   document.getElementById(id).cloneNode(true).content.firstElementChild;
 
+  const renderStop = code => {
+    state.updating=false;
+    const arrivalElement=document.querySelector('#arrivals');
+    arrivalElement.textContent="Loading arrivals at stop "+code;
+    Service.getStopInfo(code).then(res => {
+      const id = res.id;
+      Service.getStopInfo(id).then(console.log);
+      renderStopArrivals(res);
+    });
+  };
 const renderStopComponent = stop =>
   $("bus-stop", {
     dataset: {
@@ -145,14 +145,7 @@ const renderStopComponent = stop =>
     }
   });
 
-const replaceElement = (orignal, cloneDeep = true, cb) => {
-  const el = orignal.cloneNode(cloneDeep);
-  window.requestAnimationFrame(() => {
-    orignal.replaceWith(el);
-    if (cb) cb();
-  });
-  return el;
-};
+
 
 const getNearby = () => {
   Service.getStopsWithinRadius(500)
