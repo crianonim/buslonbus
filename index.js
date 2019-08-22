@@ -187,15 +187,12 @@ const updateTimes = () => {
   );
 };
 
-const stopLetterCorrected = stopLetter => (stopLetter || "-").replace("->", "");
 
 const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   const arrivalsOrig = document.getElementById("arrivals");
   const arrivalsNew = arrivalsOrig.cloneNode(false);
   const el = getTemplate("template-results");
-  el.querySelector(".letter").textContent = stopLetterCorrected(
-    stopInfo.stopLetter
-  );
+  el.querySelector(".letter").textContent = stopInfo.stopLetter
   el.querySelector(".stop-name").textContent = stopInfo.name;
   if (stopInfo.towards) {
     el.querySelector(".stop-towards").textContent =
