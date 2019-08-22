@@ -14,15 +14,14 @@ window.addEventListener("load", () => {
   displayStarred();
 });
 
-const displayStarred = () =>{
-  const stops = storage.getStarred();
-  const around = replaceElement(
-    document.querySelector(".stops-list"),
+const renderStopList = (stops,elSelector)=>{
+ const el=replaceElement(
+    document.querySelector(elSelector),
     true,
     () => {
-      around.querySelectorAll(".stop").forEach(stop => {
+      el.querySelectorAll(".stop").forEach(stop => {
         stop.addEventListener("click", ev => {
-          displayStop(ev.currentTarget.dataset.stopId);
+          renderStop(ev.currentTarget.dataset.stopId);
         });
       });
     }
@@ -30,16 +29,13 @@ const displayStarred = () =>{
   stops
     .filter(stop => stop.lines.length)
     .map(renderStopComponent)
-    .forEach(around.appendChild.bind(around));
-}
-const renderAllStarred = ()=>{
-  const starredDiv=document.querySelector('#starred');
-  let starred=storage.getStarred();
-  starred.forEach(stop=>{
-    $('test-stop',{textContent:stop},starredDiv);
-  })
+    .forEach(el.appendChild.bind(el));
 }
 
+const displayStarred = () =>{
+  renderStopList(storage.getStarred(),'.stops-list')
+}
+ 
 const setupTabs = () => {
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", e => {
@@ -67,6 +63,7 @@ const selectTab = tab => {
         }
     })
   };
+  
 const fakeLog = s => {
   document.getElementById("console").textContent += `${JSON.stringify(s)}
   `;
@@ -84,7 +81,7 @@ const displayStopBySmsCode = code => {
     .then(res => {
       const id = res.id;
       // Service.getStopInfo(id).then(console.log);
-      showArrivalsAtStop(res);
+      renderStopArrivals(res);
     })
     .catch(err => {
       // TODO send info that bad code
@@ -94,14 +91,14 @@ const displayStopBySmsCode = code => {
     });
 };
 
-const displayStop = code => {
+const renderStop = code => {
   state.updating=false;
   const arrivalElement=document.querySelector('#arrivals');
   arrivalElement.textContent="Loading arrivals at stop "+code;
   Service.getStopInfo(code).then(res => {
     const id = res.id;
     Service.getStopInfo(id).then(console.log);
-    showArrivalsAtStop(res);
+    renderStopArrivals(res);
   });
 };
 
@@ -160,28 +157,14 @@ const replaceElement = (orignal, cloneDeep = true, cb) => {
 const getNearby = () => {
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      const around = replaceElement(
-        document.querySelector(".around"),
-        true,
-        () => {
-          around.querySelectorAll(".stop").forEach(stop => {
-            stop.addEventListener("click", ev => {
-              displayStop(ev.currentTarget.dataset.stopId);
-            });
-          });
-        }
-      );
-      stops
-        .filter(stop => stop.lines.length)
-        .map(renderStopComponent)
-        .forEach(around.appendChild.bind(around));
+      renderStopList(stops,'.around');
     })
     .catch(reason => {
       console.log(reason);
     });
 };
 
-const showArrivalsAtStop = stopInfo => {
+const renderStopArrivals = stopInfo => {
   Service.getArrivailAtStopID(stopInfo.id).then(arr => {
     const processed = Service.sortByArrivalTime(arr);
     stopInfo.timestamp = Date.now();
@@ -277,12 +260,11 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     console.log(storage.toggleStarred(stopInfo));
   })
   el.querySelector(".update").addEventListener("click", () => {
-    showArrivalsAtStop(stopInfo);
+    renderStopArrivals(stopInfo);
   });
   arrivalsNew.appendChild(el);
   window.requestAnimationFrame(() => {
     arrivalsOrig.replaceWith(arrivalsNew);
   });
 };
-renderAllStarred();
 storage.test();
