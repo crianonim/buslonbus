@@ -189,19 +189,21 @@ const updateTimes = () => {
 
 
 const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
-  const arrivalsOrig = document.getElementById("arrivals");
-  const arrivalsNew = arrivalsOrig.cloneNode(false);
+  const arrivalsNew= replaceElement(document.getElementById("arrivals"),false)
+  
   const el = getTemplate("template-results");
+  
   el.querySelector(".letter").textContent = stopInfo.stopLetter
   el.querySelector(".stop-name").textContent = stopInfo.name;
   if (stopInfo.towards) {
     el.querySelector(".stop-towards").textContent =
       "towards " + stopInfo.towards;
   }
+
   if (storage.isStarred(stopInfo.id)){
     el.querySelector('.make-favourite').classList.add('starred');
   }
-  // const lineTemplate = getTemplate('template-line');
+  
   const linesDiv = el.querySelector(".lines");
   stopInfo.lines.forEach(line => {
     const lineElement = document.createElement("bus-line");
@@ -211,6 +213,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     lineElement.setAttribute("line", line);
     linesDiv.appendChild(lineElement);
   });
+
   el.querySelector(
     ".updated-at"
   ).textContent = Service.extractTimeFromISODateString(stopInfo.timestamp);
@@ -220,24 +223,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     ((Date.now() - stopInfo.timestamp) / 1000) >> 0
   );
 
-  const arrivalsDiv = el.querySelector(".arrivals");
-  arrivals
-    .filter(arr => !stopInfo.linesExcluded.includes(arr.lineName))
-    .map(arrival => {
-      //to be moved to Service
-      arrival.timeToStation = Service.secondsToTime(
-        Service.timeDifference(new Date(), arrival.expectedArrival)
-      );
-      arrival.arrivalTime = Service.extractTimeFromISODateString(
-        arrival.expectedArrival
-      );
-      const arrivalElement = document.createElement("bus-arrival");
-      arrivalElement.dataset.arrivalTime = arrival.expectedArrival;
-      arrivalElement.setAttribute("arrival", JSON.stringify(arrival));
-    
-      return arrivalElement;
-    })
-    .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
+  renderUpdatingArrivalsListComponent(el,stopInfo,arrivals)
 
   el.querySelector(".lines").addEventListener("click", ev => {
     if (ev.target.tagName === "BUS-LINE") {
@@ -259,12 +245,33 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     renderStopArrivals(stopInfo);
   });
   arrivalsNew.appendChild(el);
-  window.requestAnimationFrame(() => {
-    arrivalsOrig.replaceWith(arrivalsNew);
-  });
+ 
 };
 
-const renderStarred = () =>{
+const renderUpdatingArrivalsListComponent =(el,stopInfo,arrivals)=>{
+
+  const arrivalsDiv = el.querySelector(".arrivals");
+  arrivals
+  .filter(arr => !stopInfo.linesExcluded.includes(arr.lineName))
+  .map(arrival => {
+      //to be moved to Service
+      arrival.timeToStation = Service.secondsToTime(
+        Service.timeDifference(new Date(), arrival.expectedArrival)
+      );
+      arrival.arrivalTime = Service.extractTimeFromISODateString(
+        arrival.expectedArrival
+        );
+        const arrivalElement = document.createElement("bus-arrival");
+        arrivalElement.dataset.arrivalTime = arrival.expectedArrival;
+        arrivalElement.setAttribute("arrival", JSON.stringify(arrival));
+        
+      return arrivalElement;
+    })
+    .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
+  }
+    
+    // starred
+    const renderStarred = () =>{
   renderStopList(storage.getStarred(),'.stops-list')
 }
 
