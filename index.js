@@ -4,9 +4,9 @@ import storage from "./storage.js";
 
 import { domElementCreate as $, replaceElement } from "./dom.js";
 
-const state={
-  updating:false
-}
+const state = {
+  updating: false
+};
 
 window.addEventListener("load", () => {
   setupTabs();
@@ -24,26 +24,19 @@ if (location.search === "?debug") {
   console.log = mobileLog;
 }
 
-
-const renderStopList = (stops,elSelector)=>{
- const el=replaceElement(
-    document.querySelector(elSelector),
-    true,
-    () => {
-      el.querySelectorAll(".stop").forEach(stop => {
-        stop.addEventListener("click", ev => {
-          renderStop(ev.currentTarget.dataset.stopId);
-        });
+const renderStopList = (stops, elSelector) => {
+  const el = replaceElement(document.querySelector(elSelector), true, () => {
+    el.querySelectorAll(".stop").forEach(stop => {
+      stop.addEventListener("click", ev => {
+        renderStop(ev.currentTarget.dataset.stopId);
       });
-    }
-  );
+    });
+  });
   stops
     .filter(stop => stop.lines.length)
     .map(renderStopListComponent)
     .forEach(el.appendChild.bind(el));
-}
-
-
+};
 
 // TABS
 const setupTabs = () => {
@@ -54,27 +47,25 @@ const setupTabs = () => {
       );
     });
   });
-  selectTab(0)
+  selectTab(0);
 };
 
 const selectTab = tab => {
-    document.querySelectorAll('.tab').forEach( (tabEl,i)=>{
-        if (i===tab){
-            tabEl.classList.add('tab-active');
-        } else {
-            tabEl.classList.remove('tab-active');
-        }
-    })
-    document.querySelectorAll('.tab-item').forEach( (item,i)=>{
-        if (i===tab){
-            item.classList.remove('hidden')
-        } else {
-            item.classList.add('hidden');
-        }
-    })
-  };
-
-
+  document.querySelectorAll(".tab").forEach((tabEl, i) => {
+    if (i === tab) {
+      tabEl.classList.add("tab-active");
+    } else {
+      tabEl.classList.remove("tab-active");
+    }
+  });
+  document.querySelectorAll(".tab-item").forEach((item, i) => {
+    if (i === tab) {
+      item.classList.remove("hidden");
+    } else {
+      item.classList.add("hidden");
+    }
+  });
+};
 
 // DIAL SMS CODE section
 
@@ -127,10 +118,8 @@ const renderSMScodeEntry = () => {
   });
 };
 
-
 const getTemplate = id =>
   document.getElementById(id).cloneNode(true).content.firstElementChild;
-
 
 const renderStopListComponent = stop =>
   $("bus-stop", {
@@ -142,7 +131,7 @@ const renderStopListComponent = stop =>
 const renderNearby = () => {
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      renderStopList(stops,'.around');
+      renderStopList(stops, ".around");
     })
     .catch(reason => {
       console.log(reason);
@@ -152,16 +141,15 @@ const renderNearby = () => {
 // ARRIVALS STOP
 
 const renderStop = code => {
-  state.updating=false;
-  const arrivalElement=document.querySelector('#arrivals');
-  arrivalElement.textContent="Loading arrivals at stop "+code;
+  state.updating = false;
+  const arrivalElement = document.querySelector("#arrivals");
+  arrivalElement.textContent = "Loading arrivals at stop " + code;
   Service.getStopInfo(code).then(res => {
     const id = res.id;
-    Service.getStopInfo(id).then(console.log);
+    // Service.getStopInfo(id).then(console.log);
     renderStopArrivals(res);
   });
 };
-
 
 const renderStopArrivals = stopInfo => {
   Service.getArrivailAtStopID(stopInfo.id).then(arr => {
@@ -170,7 +158,7 @@ const renderStopArrivals = stopInfo => {
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
     renderUpdatingArrivalsComponent(stopInfo, processed);
     setInterval(updateTimes, 1000);
-    state.updating=true;
+    state.updating = true;
   });
 };
 
@@ -187,23 +175,43 @@ const updateTimes = () => {
   );
 };
 
-
 const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
-  const arrivalsNew= replaceElement(document.getElementById("arrivals"),false)
-  
+  const arrivalsNew = replaceElement(
+    document.getElementById("arrivals"),
+    false
+  );
+
   const el = getTemplate("template-results");
-  
-  el.querySelector(".letter").textContent = stopInfo.stopLetter
+
+  el.querySelector(".letter").textContent = stopInfo.stopLetter;
   el.querySelector(".stop-name").textContent = stopInfo.name;
   if (stopInfo.towards) {
     el.querySelector(".stop-towards").textContent =
       "towards " + stopInfo.towards;
   }
 
-  if (storage.isStarred(stopInfo.id)){
-    el.querySelector('.make-favourite').classList.add('starred');
+  if (storage.isStarred(stopInfo.id)) {
+    el.querySelector(".make-favourite").classList.add("starred");
   }
-  
+
+  renderLineNumbers(el,stopInfo);
+
+  renderTimesInArrivalsLine(el, stopInfo);
+
+  renderUpdatingArrivalsListComponent(el, stopInfo, arrivals);
+
+  activateBusLinesToggle(el, stopInfo, arrivals);
+
+  el.querySelector(".make-favourite").addEventListener("click", () => {
+    console.log(storage.toggleStarred(stopInfo));
+  });
+  el.querySelector(".update").addEventListener("click", () => {
+    renderStopArrivals(stopInfo);
+  });
+  arrivalsNew.appendChild(el);
+};
+
+const renderLineNumbers = (el,stopInfo)=>{
   const linesDiv = el.querySelector(".lines");
   stopInfo.lines.forEach(line => {
     const lineElement = document.createElement("bus-line");
@@ -213,7 +221,9 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     lineElement.setAttribute("line", line);
     linesDiv.appendChild(lineElement);
   });
+}
 
+const renderTimesInArrivalsLine = (el, stopInfo) => {
   el.querySelector(
     ".updated-at"
   ).textContent = Service.extractTimeFromISODateString(stopInfo.timestamp);
@@ -222,62 +232,48 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   updatedAgo.textContent = Service.secondsToTime(
     ((Date.now() - stopInfo.timestamp) / 1000) >> 0
   );
-
-  renderUpdatingArrivalsListComponent(el,stopInfo,arrivals);
-  
-  activateBusLinesToggle(el,stopInfo,arrivals);
-  
-  el.querySelector('.make-favourite').addEventListener('click',()=>{
-    console.log(storage.toggleStarred(stopInfo));
-  })
-  el.querySelector(".update").addEventListener("click", () => {
-    renderStopArrivals(stopInfo);
-  });
-  arrivalsNew.appendChild(el);
- 
 };
 
-const renderUpdatingArrivalsListComponent =(el,stopInfo,arrivals)=>{
-
+const renderUpdatingArrivalsListComponent = (el, stopInfo, arrivals) => {
   const arrivalsDiv = el.querySelector(".arrivals");
   arrivals
-  .filter(arr => !stopInfo.linesExcluded.includes(arr.lineName))
-  .map(arrival => {
+    .filter(arr => !stopInfo.linesExcluded.includes(arr.lineName))
+    .map(arrival => {
       //to be moved to Service
       arrival.timeToStation = Service.secondsToTime(
         Service.timeDifference(new Date(), arrival.expectedArrival)
       );
       arrival.arrivalTime = Service.extractTimeFromISODateString(
         arrival.expectedArrival
-        );
-        const arrivalElement = document.createElement("bus-arrival");
-        arrivalElement.dataset.arrivalTime = arrival.expectedArrival;
-        arrivalElement.setAttribute("arrival", JSON.stringify(arrival));
-        
+      );
+      const arrivalElement = document.createElement("bus-arrival");
+      arrivalElement.dataset.arrivalTime = arrival.expectedArrival;
+      arrivalElement.setAttribute("arrival", JSON.stringify(arrival));
+
       return arrivalElement;
     })
     .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
-  }
+};
 
-  const activateBusLinesToggle = (el,stopInfo,arrivals) =>{
-    el.querySelector(".lines").addEventListener("click", ev => {
-      if (ev.target.tagName === "BUS-LINE") {
-        let lineName = ev.target.getAttribute("line");
-        if (stopInfo.linesExcluded.includes(lineName)) {
-          stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
-            el => el != lineName
-          );
-        } else {
-          stopInfo.linesExcluded.push(lineName);
-        }
-        renderUpdatingArrivalsComponent(stopInfo, arrivals);
+const activateBusLinesToggle = (el, stopInfo, arrivals) => {
+  el.querySelector(".lines").addEventListener("click", ev => {
+    if (ev.target.tagName === "BUS-LINE") {
+      let lineName = ev.target.getAttribute("line");
+      if (stopInfo.linesExcluded.includes(lineName)) {
+        stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
+          el => el != lineName
+        );
+      } else {
+        stopInfo.linesExcluded.push(lineName);
       }
-    });
-  }
-    
-    // starred
-    const renderStarred = () =>{
-  renderStopList(storage.getStarred(),'.stops-list')
-}
+      renderUpdatingArrivalsComponent(stopInfo, arrivals);
+    }
+  });
+};
+
+// starred
+const renderStarred = () => {
+  renderStopList(storage.getStarred(), ".stops-list");
+};
 
 storage.test();
