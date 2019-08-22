@@ -10,7 +10,7 @@ const state = {
 
 window.addEventListener("load", () => {
   setupTabs();
-  renderNearby();
+  setupNearby();
   renderSMScodeEntry();
   renderStarred();
   setInterval(updateTimes, 1000);
@@ -26,7 +26,7 @@ if (location.search === "?debug") {
 }
 
 const renderStopList = (stops, elSelector) => {
-  const el = replaceElement(document.querySelector(elSelector), true, () => {
+  const el = replaceElement(document.querySelector(elSelector), false, () => {
     el.querySelectorAll(".stop").forEach(stop => {
       stop.addEventListener("click", ev => {
         renderStop(ev.currentTarget.dataset.stopId);
@@ -129,10 +129,14 @@ const renderStopListComponent = stop =>
     }
   });
 
+const setupNearby=()=>{
+  document.querySelector('.nearby-btn').addEventListener('click',renderNearby)
+}
 const renderNearby = () => {
+  document.querySelector('.around-list').textContent="Loading stops nearby...";
   Service.getStopsWithinRadius(500)
     .then(stops => {
-      renderStopList(stops, ".around");
+      renderStopList(stops, ".around-list");
     })
     .catch(reason => {
       console.log(reason);
@@ -202,6 +206,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
 
   el.querySelector(".make-favourite").addEventListener("click", () => {
     console.log(storage.toggleStarred(stopInfo));
+    renderStarred()
   });
   el.querySelector(".update").addEventListener("click", () => {
     renderStopArrivals(stopInfo);
@@ -277,6 +282,7 @@ const closeButtonHandler = ()=>{
 
 // starred
 const renderStarred = () => {
+  
   renderStopList(storage.getStarred(), ".stops-list");
 };
 
