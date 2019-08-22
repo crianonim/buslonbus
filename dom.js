@@ -22,3 +22,7 @@ export const replaceElement = (orignal, cloneDeep = true, cb) => {
     });
     return el;
   };
+
+  export const clearElement = (el)=>{
+      el.innerHTML="";
+  }
