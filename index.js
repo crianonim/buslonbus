@@ -10,10 +10,20 @@ const state={
 
 window.addEventListener("load", () => {
   setupTabs();
-  displaySMScodeEntry();
-  getNearby();
-  displayStarred();
+  renderNearby();
+  renderSMScodeEntry();
+  renderStarred();
 });
+
+// Show console.log messages in browser window
+const mobileLog = s => {
+  document.getElementById("console").textContent += `${JSON.stringify(s)}
+  `;
+};
+if (location.search === "?debug") {
+  console.log = mobileLog;
+}
+
 
 const renderStopList = (stops,elSelector)=>{
  const el=replaceElement(
@@ -29,14 +39,13 @@ const renderStopList = (stops,elSelector)=>{
   );
   stops
     .filter(stop => stop.lines.length)
-    .map(renderStopComponent)
+    .map(renderStopListComponent)
     .forEach(el.appendChild.bind(el));
 }
 
-const displayStarred = () =>{
-  renderStopList(storage.getStarred(),'.stops-list')
-}
- 
+
+
+// TABS
 const setupTabs = () => {
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", e => {
@@ -64,19 +73,12 @@ const selectTab = tab => {
         }
     })
   };
-  
-const fakeLog = s => {
-  document.getElementById("console").textContent += `${JSON.stringify(s)}
-  `;
-};
-if (location.search === "?debug") {
-  console.log = fakeLog;
-  console.error = fakeLog;
-  console.warn = fakeLog;
-}
-let code = "";
+
+
 
 // DIAL SMS CODE section
+
+let code = "";
 
 const displayStopBySmsCode = code => {
   Service.getStopID(code)
@@ -102,7 +104,7 @@ const updateSMSCode = () => {
   }
 };
 
-const displaySMScodeEntry = () => {
+const renderSMScodeEntry = () => {
   document.getElementById("digits").addEventListener("click", ev => {
     if (ev.target.classList.contains("digit")) {
       const digit = ev.target.textContent;
@@ -125,29 +127,19 @@ const displaySMScodeEntry = () => {
   });
 };
 
+
 const getTemplate = id =>
   document.getElementById(id).cloneNode(true).content.firstElementChild;
 
-  const renderStop = code => {
-    state.updating=false;
-    const arrivalElement=document.querySelector('#arrivals');
-    arrivalElement.textContent="Loading arrivals at stop "+code;
-    Service.getStopInfo(code).then(res => {
-      const id = res.id;
-      Service.getStopInfo(id).then(console.log);
-      renderStopArrivals(res);
-    });
-  };
-const renderStopComponent = stop =>
+
+const renderStopListComponent = stop =>
   $("bus-stop", {
     dataset: {
       stop: JSON.stringify(stop)
     }
   });
 
-
-
-const getNearby = () => {
+const renderNearby = () => {
   Service.getStopsWithinRadius(500)
     .then(stops => {
       renderStopList(stops,'.around');
@@ -157,12 +149,26 @@ const getNearby = () => {
     });
 };
 
+// ARRIVALS STOP
+
+const renderStop = code => {
+  state.updating=false;
+  const arrivalElement=document.querySelector('#arrivals');
+  arrivalElement.textContent="Loading arrivals at stop "+code;
+  Service.getStopInfo(code).then(res => {
+    const id = res.id;
+    Service.getStopInfo(id).then(console.log);
+    renderStopArrivals(res);
+  });
+};
+
+
 const renderStopArrivals = stopInfo => {
   Service.getArrivailAtStopID(stopInfo.id).then(arr => {
     const processed = Service.sortByArrivalTime(arr);
     stopInfo.timestamp = Date.now();
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
-    renderResultsComponent(stopInfo, processed);
+    renderUpdatingArrivalsComponent(stopInfo, processed);
     setInterval(updateTimes, 1000);
     state.updating=true;
   });
@@ -183,7 +189,7 @@ const updateTimes = () => {
 
 const stopLetterCorrected = stopLetter => (stopLetter || "-").replace("->", "");
 
-const renderResultsComponent = (stopInfo, arrivals) => {
+const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   const arrivalsOrig = document.getElementById("arrivals");
   const arrivalsNew = arrivalsOrig.cloneNode(false);
   const el = getTemplate("template-results");
@@ -246,7 +252,7 @@ const renderResultsComponent = (stopInfo, arrivals) => {
       } else {
         stopInfo.linesExcluded.push(lineName);
       }
-      renderResultsComponent(stopInfo, arrivals);
+      renderUpdatingArrivalsComponent(stopInfo, arrivals);
     }
   });
   el.querySelector('.make-favourite').addEventListener('click',()=>{
@@ -260,4 +266,9 @@ const renderResultsComponent = (stopInfo, arrivals) => {
     arrivalsOrig.replaceWith(arrivalsNew);
   });
 };
+
+const renderStarred = () =>{
+  renderStopList(storage.getStarred(),'.stops-list')
+}
+
 storage.test();
