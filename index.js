@@ -145,8 +145,6 @@ const renderStop = code => {
   const arrivalElement = document.querySelector("#arrivals");
   arrivalElement.textContent = "Loading arrivals at stop " + code;
   Service.getStopInfo(code).then(res => {
-    const id = res.id;
-    // Service.getStopInfo(id).then(console.log);
     renderStopArrivals(res);
   });
 };
@@ -194,9 +192,9 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     el.querySelector(".make-favourite").classList.add("starred");
   }
 
-  renderLineNumbers(el,stopInfo);
+  renderLineNumbers(el, stopInfo);
 
-  renderTimesInArrivalsLine(el, stopInfo);
+  renderUpdateTimesInArrivals(el, stopInfo);
 
   renderUpdatingArrivalsListComponent(el, stopInfo, arrivals);
 
@@ -211,7 +209,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   arrivalsNew.appendChild(el);
 };
 
-const renderLineNumbers = (el,stopInfo)=>{
+const renderLineNumbers = (el, stopInfo) => {
   const linesDiv = el.querySelector(".lines");
   stopInfo.lines.forEach(line => {
     const lineElement = document.createElement("bus-line");
@@ -221,9 +219,9 @@ const renderLineNumbers = (el,stopInfo)=>{
     lineElement.setAttribute("line", line);
     linesDiv.appendChild(lineElement);
   });
-}
+};
 
-const renderTimesInArrivalsLine = (el, stopInfo) => {
+const renderUpdateTimesInArrivals = (el, stopInfo) => {
   el.querySelector(
     ".updated-at"
   ).textContent = Service.extractTimeFromISODateString(stopInfo.timestamp);
