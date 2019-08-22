@@ -223,21 +223,10 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
     ((Date.now() - stopInfo.timestamp) / 1000) >> 0
   );
 
-  renderUpdatingArrivalsListComponent(el,stopInfo,arrivals)
-
-  el.querySelector(".lines").addEventListener("click", ev => {
-    if (ev.target.tagName === "BUS-LINE") {
-      let lineName = ev.target.getAttribute("line");
-      if (stopInfo.linesExcluded.includes(lineName)) {
-        stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
-          el => el != lineName
-        );
-      } else {
-        stopInfo.linesExcluded.push(lineName);
-      }
-      renderUpdatingArrivalsComponent(stopInfo, arrivals);
-    }
-  });
+  renderUpdatingArrivalsListComponent(el,stopInfo,arrivals);
+  
+  activateBusLinesToggle(el,stopInfo,arrivals);
+  
   el.querySelector('.make-favourite').addEventListener('click',()=>{
     console.log(storage.toggleStarred(stopInfo));
   })
@@ -268,6 +257,22 @@ const renderUpdatingArrivalsListComponent =(el,stopInfo,arrivals)=>{
       return arrivalElement;
     })
     .forEach(arrivalElement => arrivalsDiv.appendChild(arrivalElement));
+  }
+
+  const activateBusLinesToggle = (el,stopInfo,arrivals) =>{
+    el.querySelector(".lines").addEventListener("click", ev => {
+      if (ev.target.tagName === "BUS-LINE") {
+        let lineName = ev.target.getAttribute("line");
+        if (stopInfo.linesExcluded.includes(lineName)) {
+          stopInfo.linesExcluded = stopInfo.linesExcluded.filter(
+            el => el != lineName
+          );
+        } else {
+          stopInfo.linesExcluded.push(lineName);
+        }
+        renderUpdatingArrivalsComponent(stopInfo, arrivals);
+      }
+    });
   }
     
     // starred
