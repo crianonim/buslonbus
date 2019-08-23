@@ -55,9 +55,6 @@ button {
 
 }
 
-.arrival {
-    font-size:0.9rem;
-}
 .arrival-time {
     width:4em;
     display: inline-block;
@@ -161,8 +158,8 @@ button {
 }
 bus-line {
     border: 1px solid black;
-    padding: 2px;   
-    margin:2px;
+    margin: 2px;   
+    padding:2px 5px;
 }
 
 bus-line .excluded {
