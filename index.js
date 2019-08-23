@@ -13,6 +13,7 @@ window.addEventListener("load", () => {
   setupNearby();
   renderSMScodeEntry();
   renderStarred();
+  renderNearby();
   setInterval(updateTimes, 1000);
 });
 
@@ -287,4 +288,4 @@ const renderStarred = () => {
   renderStopList(storage.getStarred(), ".stops-list");
 };
 
-storage.test();
+// storage.test();
