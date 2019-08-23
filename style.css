@@ -2,6 +2,16 @@ body {
     font-family: sans-serif;
 }
 
+button {
+    background-color: inherit;
+    border:1px solid white;
+    padding: 5px   1rem;
+
+}
+.flex-row {
+    display: flex;
+    align-items: center;
+}
 .stop-title-line {
     display: flex;
     align-items: center;
@@ -14,6 +24,7 @@ body {
     background-color: grey;
     color: white;
     padding: 2px;
+    min-height: 38px;
 }
 .stop-towards {
     font-size:0.8em;
@@ -133,7 +144,6 @@ body {
 }
 .make-favourite {
     width: 2rem;
-    border:solid 1px black;
     text-align: center;
 }
 bus-line {
@@ -174,4 +184,8 @@ bus-line .excluded {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.nearby-btn {
+    margin-right: 1rem;
 }
