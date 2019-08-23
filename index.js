@@ -192,7 +192,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
       "towards " + stopInfo.towards;
   }
 
-  if (storage.isStarred(stopInfo.id)) {
+  if (storage.isStarred(stopInfo)) {
     el.querySelector(".make-favourite").classList.add("starred");
   }
 
@@ -206,7 +206,8 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
 
   el.querySelector(".make-favourite").addEventListener("click", () => {
     console.log(storage.toggleStarred(stopInfo));
-    renderStarred()
+    renderStarred();
+    renderStopArrivals(stopInfo);
   });
   el.querySelector(".update").addEventListener("click", () => {
     renderStopArrivals(stopInfo);

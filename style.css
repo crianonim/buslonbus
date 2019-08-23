@@ -15,13 +15,14 @@ button {
 .stop-title-line {
     display: flex;
     align-items: center;
+    border: 1px solid lightslategray;
 }
 .stop-title-text {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
-    background-color: grey;
+    background-color: lightslategray;
     color: white;
     padding: 2px;
     min-height: 38px;
@@ -49,8 +50,13 @@ button {
     align-items: center;
     justify-content: center;
     font-weight: bolder;
-    margin-right: 2px;
+    margin:0 3px;
     flex-shrink: 0;
+
+}
+
+.arrival {
+    font-size:0.9rem;
 }
 .arrival-time {
     width:4em;
@@ -120,12 +126,13 @@ button {
     color:white;
     margin: 3px 0;
 }
+#arrivals {
+    margin:2px 0;   
+}
 .hidden{
     display: none!Important;
 }
-.starred {
-    color:pink;
-}
+
 .around  .stop, .stops-list .stop {
     display: flex;
     margin: 10px 0;
@@ -145,6 +152,12 @@ button {
 .make-favourite {
     width: 2rem;
     text-align: center;
+    opacity: 0.5;
+    padding: 8px;
+}
+.make-favourite.starred {
+    font-weight: bold;
+    opacity: 1;
 }
 bus-line {
     border: 1px solid black;
@@ -170,14 +183,13 @@ bus-line .excluded {
     flex-grow: 1;
     text-align: center;
     margin: 1px;
-    background-color: beige;
+    background-color:hsl(0,100%,90%,1);
 }
 .tab.tab-active {
-    background-color: bisque;
+    background-color: hsl(0,100%,75%,1);
     font-weight: bold;
 }
 .close-stop-btn {
-    border: 1px solid black;
     width: 2rem;
     align-self: stretch;
     display: flex;
@@ -188,4 +200,5 @@ bus-line .excluded {
 
 .nearby-btn {
     margin-right: 1rem;
+    color: white
 }
