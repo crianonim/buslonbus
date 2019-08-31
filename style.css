@@ -2,6 +2,10 @@ body {
     font-family: sans-serif;
 }
 
+#app {
+    max-width: 800px;
+    margin: auto;
+}
 button {
     background-color: inherit;
     border:1px solid white;
