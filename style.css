@@ -178,9 +178,11 @@ bus-line .excluded {
 .tab {
     padding: 5px;
     flex-grow: 1;
-    text-align: center;
     margin: 1px;
     background-color:hsl(0,100%,90%,1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .tab.tab-active {
     background-color: hsl(0,100%,75%,1);
@@ -198,4 +200,9 @@ bus-line .excluded {
 .nearby-btn {
     margin-right: 1rem;
     color: white
+}
+.centered-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
