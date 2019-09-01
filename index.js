@@ -27,7 +27,6 @@ if (location.search === "?debug") {
 }
 
 const renderStopList = (stops, elSelector) => {
-  console.log({stops});
   const el = replaceElement(document.querySelector(elSelector), false, () => {
     el.querySelectorAll(".stop").forEach(stop => {
       stop.addEventListener("click", ev => {
@@ -127,7 +126,8 @@ const getTemplate = id =>
 const renderStopListComponent = stop =>
   $("bus-stop", {
     dataset: {
-      stop: JSON.stringify(stop)
+      stop: JSON.stringify(stop),
+      starred: storage.isStarred(stop),
     }
   });
 

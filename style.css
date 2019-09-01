@@ -56,7 +56,7 @@ button {
     font-weight: bolder;
     margin:0 3px;
     flex-shrink: 0;
-
+    border: 3px solid transparent;
 }
 
 .arrival-time {
@@ -209,4 +209,7 @@ bus-line .excluded {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.starred-stop-letter {
+    border: 3px solid black;
 }

@@ -25,6 +25,8 @@ class BusStop extends HTMLElement {
         // });
         if (!this.dataset.stop) return;
         const stop = JSON.parse(this.dataset.stop);
+        const starred = JSON.parse(this.dataset.starred);
+        console.log({starred})
         const stopDiv = $('div', {
             className: 'stop',
             dataset: {
@@ -32,7 +34,7 @@ class BusStop extends HTMLElement {
             }
         }, this);
         $('span', {
-            className: "letter",
+            className: "letter"+(starred?" starred-stop-letter":""),
             textContent: stop.stopLetter
         }, stopDiv)
         const stopMainInfo = $('div', {
