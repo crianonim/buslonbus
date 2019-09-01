@@ -40,7 +40,7 @@ function timeDifference(start, end) {
 }
 
 async function getStopsWithinRadius(r = 200) {
-  return new Promise(resolve => {
+  return new Promise( (resolve,reject) => {
     navigator.geolocation.getCurrentPosition(async pos => {
       const { coords } = pos;
       const lat = coords.latitude;
@@ -66,6 +66,8 @@ async function getStopsWithinRadius(r = 200) {
         return stopInfo;
       });
       resolve(stops);
+    },error=>{
+      reject(error);
     });
   });
 }

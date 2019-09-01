@@ -27,6 +27,7 @@ if (location.search === "?debug") {
 }
 
 const renderStopList = (stops, elSelector) => {
+  console.log({stops});
   const el = replaceElement(document.querySelector(elSelector), false, () => {
     el.querySelectorAll(".stop").forEach(stop => {
       stop.addEventListener("click", ev => {
