@@ -46,7 +46,7 @@ const setupTabs = () => {
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", e => {
       selectTab(
-        Array.from(e.target.parentElement.children).findIndex(el => el === tab)
+        Array.from(e.currentTarget.parentElement.children).findIndex(el => el === tab)
       );
     });
   });
