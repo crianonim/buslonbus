@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>BusLonBus</title>
-    <script type="module" src="index.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <script type="module" src="index.js"></script>
+    <script>
+      if ('serviceWorker' in navigator){
+        navigator.serviceWorker.register('/sw.js')
+         .then(()=>{
+           console.log("Servis worker registered");
+         })
+      }
+    </script>
   </head>
   <body>
     <div id="app">
