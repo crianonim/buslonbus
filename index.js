@@ -150,7 +150,7 @@ const renderNearby = () => {
 const renderStop = code => {
   state.updating = false;
   const arrivalElement = document.querySelector("#arrivals");
-  arrivalElement.textContent = "Loading arrivals at stop " + code;
+  arrivalElement.textContent = "Loading arrivals at the bus stop" 
   Service.getStopInfo(code).then(res => {
     renderStopArrivals(res);
   });
