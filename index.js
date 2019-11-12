@@ -34,7 +34,10 @@ const renderStopList = (stops, elSelector) => {
       });
     });
   });
-  stops
+  const sortBy = localStorage.getItem("sortBy");
+
+  (sortBy == "alpha" ? stops.sort((a, b) => a.stopLetter > b.stopLetter ? 1 : -1) : stops)
+    .map(x => { console.log(x); return x })
     .filter(stop => stop.lines.length)
     .map(renderStopListComponent)
     .forEach(el.appendChild.bind(el));
@@ -131,11 +134,21 @@ const renderStopListComponent = stop =>
     }
   });
 
-const setupNearby=()=>{
-  document.querySelector('.nearby-btn').addEventListener('click',renderNearby)
+const setupNearby = () => {
+  document.querySelector('.nearby-btn').addEventListener('click', renderNearby);
+  const abc = document.querySelector('button.sort-ABC')
+  const isABC = localStorage.getItem("sortBy") == "alpha"
+  if (isABC) abc.classList.add("inverse");
+  abc.addEventListener('click', () => {
+    const isABC = localStorage.getItem("sortBy") == "alpha"
+    if (isABC) abc.classList.remove("inverse")
+    else abc.classList.add("inverse");
+    localStorage.setItem("sortBy", isABC ? "normal" : "alpha")
+    renderNearby();
+  })
 }
 const renderNearby = () => {
-  document.querySelector('.around-list').textContent="Loading stops nearby...";
+  document.querySelector('.around-list').textContent = "Loading stops nearby...";
   Service.getStopsWithinRadius(500)
     .then(stops => {
       renderStopList(stops, ".around-list");
@@ -150,7 +163,7 @@ const renderNearby = () => {
 const renderStop = code => {
   state.updating = false;
   const arrivalElement = document.querySelector("#arrivals");
-  arrivalElement.textContent = "Loading arrivals at the bus stop" 
+  arrivalElement.textContent = "Loading arrivals at the bus stop"
   Service.getStopInfo(code).then(res => {
     renderStopArrivals(res);
   });
@@ -163,7 +176,7 @@ const renderStopArrivals = stopInfo => {
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
     renderUpdatingArrivalsComponent(stopInfo, processed);
     state.updating = true;
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   });
 };
 
@@ -215,7 +228,7 @@ const renderUpdatingArrivalsComponent = (stopInfo, arrivals) => {
   el.querySelector(".update").addEventListener("click", () => {
     renderStopArrivals(stopInfo);
   });
-  el.querySelector(".close-stop-btn").addEventListener("click",closeButtonHandler);
+  el.querySelector(".close-stop-btn").addEventListener("click", closeButtonHandler);
   arrivalsNew.appendChild(el);
 };
 
@@ -279,14 +292,14 @@ const activateBusLinesToggle = (el, stopInfo, arrivals) => {
   });
 };
 
-const closeButtonHandler = ()=>{
-  state.updating=false;
+const closeButtonHandler = () => {
+  state.updating = false;
   clearElement(document.querySelector('#arrivals'));
 }
 
 // starred
 const renderStarred = () => {
-  
+
   renderStopList(storage.getStarred(), ".stops-list");
 };
 
