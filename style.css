@@ -1,3 +1,6 @@
+* {
+    outline: none;
+}
 body {
     font-family: sans-serif;
 }
@@ -12,9 +15,21 @@ button {
     padding: 5px   1rem;
 
 }
+.inverse{
+    background-color: hsl(0,100%,75%,1);
+}
 .flex-row {
     display: flex;
     align-items: center;
+}
+.flex-grow {
+    flex-grow: 1;
+}
+.flex-stretch {
+    align-items: stretch;
+}
+.flex-align-self-center {
+    align-self: center;
 }
 .stop-title-line {
     display: flex;
