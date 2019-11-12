@@ -34,7 +34,10 @@ const renderStopList = (stops, elSelector) => {
       });
     });
   });
-  stops
+  const sortBy=localStorage.getItem("sortBy");
+  
+  (sortBy=="alpha"? stops.sort((a,b)=>a.stopLetter>b.stopLetter?1:-1) : stops)
+    .map(x=>{console.log(x);return x})
     .filter(stop => stop.lines.length)
     .map(renderStopListComponent)
     .forEach(el.appendChild.bind(el));
