@@ -228,3 +228,9 @@ bus-line .excluded {
 .starred-stop-letter {
     border: 3px solid black;
 }
+footer {
+    text-align: center;
+    font-size: 0.8em;
+    background-color: hsl(0,100%,90%,1);
+    padding: 1em;
+}
