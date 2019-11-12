@@ -163,6 +163,7 @@ const renderStopArrivals = stopInfo => {
     stopInfo.linesExcluded = stopInfo.linesExcluded || [];
     renderUpdatingArrivalsComponent(stopInfo, processed);
     state.updating = true;
+    window.scrollTo(0,0);
   });
 };
 
